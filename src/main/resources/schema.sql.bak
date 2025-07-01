@@ -1,0 +1,9 @@
+-- Create otp_requests table if it doesn't exist
+CREATE TABLE IF NOT EXISTS otp_requests (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    chatgpt_email VARCHAR(255) NOT NULL,
+    request_time DATETIME NOT NULL,
+    otp_code VARCHAR(10),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+); 

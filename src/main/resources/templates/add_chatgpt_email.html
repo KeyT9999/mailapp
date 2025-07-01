@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm email ChatGPT</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📧</text></svg>">
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+    <style>
+        body {
+            background: #fff8f0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #b71c1c;
+            margin: 0;
+            padding: 0;
+        }
+
+        .brand-keyt {
+            text-align: center;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        .logout-link {
+            float: right;
+            color: #b71c1c;
+            font-weight: bold;
+            margin: 18px 24px 0 0;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        h2 {
+            color: #b71c1c;
+            text-align: center;
+            margin-top: 30px;
+            letter-spacing: 1px;
+        }
+
+        form {
+            background: #fff;
+            border: 2px solid #b71c1c;
+            border-radius: 12px;
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 32px 28px 24px 28px;
+            box-shadow: 0 4px 16px rgba(183,28,28,0.08);
+        }
+
+        label {
+            color: #b71c1c;
+            font-weight: bold;
+        }
+
+        input[type="email"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 18px 0;
+            border: 1.5px solid #b71c1c;
+            border-radius: 6px;
+            background: #fffdfa;
+            font-size: 1em;
+            color: #b71c1c;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(90deg, #ff9800 0%, #b71c1c 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 0;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(183,28,28,0.08);
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #b71c1c 0%, #ff9800 100%);
+        }
+
+        .error {
+            color: #d32f2f !important;
+            font-weight: bold;
+            margin: 10px 0 0 0;
+            text-align: center;
+        }
+
+        .success {
+            color: #388e3c !important;
+            font-weight: bold;
+            margin: 10px 0 0 0;
+            text-align: center;
+        }
+
+        .users-list {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .users-list h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .user-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-email {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .user-role {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .otp-count {
+            background: linear-gradient(90deg, #ff9800 0%, #b71c1c 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .users-table th,
+        .users-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .users-table th {
+            background-color: #f1f3f4;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .users-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .last-request-time {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        a {
+            color: #b71c1c;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="brand-keyt">
+        <span style="font-size:2.2em; color:#b71c1c; font-weight:bold; letter-spacing:2px; text-shadow:1px 1px 0 #fff3e0;">Tiệm Tạp Hóa KeyT</span>
+    </div>
+    
+    <a th:href="@{/logout}" class="logout-link">Đăng xuất</a>
+    
+    <h2>Thêm email ChatGPT</h2>
+    
+    <form th:action="@{/admin/add-chatgpt-email}" method="post">
+        <label>Email ChatGPT:</label>
+        <input type="email" name="chatgptEmail" required>
+        
+        <label>Secret Key:</label>
+        <input type="text" name="secretKey" required>
+        
+        <button type="submit">Thêm email ChatGPT</button>
+    </form>
+    
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+    <div th:if="${success}" class="success" th:utext="${success}"></div>
+    
+    <div class="users-list">
+        <h3>Danh sách Users:</h3>
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Số lần get mã</th>
+                    <th>Lần cuối get mã</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(users)}">
+                    <td colspan="4" style="text-align: center; padding: 2rem;">
+                        Không có user nào trong hệ thống.
+                    </td>
+                </tr>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.role}"></td>
+                    <td>
+                        <span class="otp-count" th:text="${userOtpInfoMap != null and userOtpInfoMap.containsKey(user.id) ? userOtpInfoMap.get(user.id).getRequestCount() : 0}"></span>
+                    </td>
+                    <td class="last-request-time" th:text="${userOtpInfoMap != null and userOtpInfoMap.containsKey(user.id) ? userOtpInfoMap.get(user.id).getFormattedLastRequestTime() : 'Chưa có'}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script th:src="@{/burst.js}" src="/burst.js"></script>
+</html> 

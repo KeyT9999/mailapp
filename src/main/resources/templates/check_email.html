@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra email và gửi mã 2FA</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📧</text></svg>">
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+    <style>
+        body {
+            background: #fff8f0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #b71c1c;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #b71c1c;
+            text-align: center;
+            margin-top: 30px;
+            letter-spacing: 1px;
+        }
+
+        form {
+            background: #fff;
+            border: 2px solid #b71c1c;
+            border-radius: 12px;
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 32px 28px 24px 28px;
+            box-shadow: 0 4px 16px rgba(183,28,28,0.08);
+        }
+
+        label {
+            color: #b71c1c;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 18px 0;
+            border: 1.5px solid #b71c1c;
+            border-radius: 6px;
+            background: #fffdfa;
+            font-size: 1em;
+            color: #b71c1c;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(90deg, #ff9800 0%, #b71c1c 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 0;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(183,28,28,0.08);
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #b71c1c 0%, #ff9800 100%);
+        }
+
+        .error {
+            color: #d32f2f !important;
+            font-weight: bold;
+            margin: 10px 0 0 0;
+            text-align: center;
+        }
+
+        .success {
+            color: #388e3c !important;
+            font-weight: bold;
+            margin: 10px 0 0 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Kiểm tra email và gửi mã 2FA</h2>
+    
+    <form th:action="@{/check-email}" method="post">
+        <label>Email:</label>
+        <input type="text" name="email" required>
+        <button type="submit">Gửi mã 2FA</button>
+    </form>
+    
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+</body>
+<script th:src="@{/burst.js}" src="/burst.js"></script>
+</html> 
