@@ -31,30 +31,30 @@ public class ChatGptAccountService {
     }
     
     public ChatGptAccount saveChatGptAccount(ChatGptAccount account) {
-        logger.info("Saving ChatGPT account: {}", account.getChatgptEmail());
+        if (account.getChatgptEmail() != null) {
+            String normalized = account.getChatgptEmail().trim().toLowerCase();
+            logger.debug("Normalized email before save: '{}' -> '{}'", account.getChatgptEmail(), normalized);
+            account.setChatgptEmail(normalized);
+        }
         return chatGptAccountRepository.save(account);
     }
     
     public Optional<ChatGptAccount> findByEmail(String chatgptEmail) {
-        logger.info("Searching for ChatGPT email in database: {}", chatgptEmail);
-        try {
-            Optional<ChatGptAccount> result = chatGptAccountRepository.findByChatgptEmail(chatgptEmail);
-            if (result.isPresent()) {
-                logger.info("Found ChatGPT account: {}", chatgptEmail);
-            } else {
-                logger.warn("ChatGPT email not found: {}", chatgptEmail);
-                // Log all available emails for debugging
-                List<ChatGptAccount> allAccounts = chatGptAccountRepository.findAll();
-                logger.info("Total ChatGPT accounts in database: {}", allAccounts.size());
-                for (ChatGptAccount acc : allAccounts) {
-                    logger.info("Available account: {}", acc.getChatgptEmail());
-                }
+        if (chatgptEmail == null) return Optional.empty();
+        String normalized = chatgptEmail.trim().toLowerCase();
+        logger.debug("Normalized input email for search: '{}' -> '{}'", chatgptEmail, normalized);
+        Optional<ChatGptAccount> result = chatGptAccountRepository.findByChatgptEmailIgnoreCase(normalized);
+        if (result.isPresent()) {
+            logger.info("Found ChatGPT account: {}", normalized);
+        } else {
+            logger.warn("ChatGPT email not found: {}", normalized);
+            List<ChatGptAccount> allAccounts = chatGptAccountRepository.findAll();
+            logger.info("Total ChatGPT accounts in database: {}", allAccounts.size());
+            for (ChatGptAccount acc : allAccounts) {
+                logger.info("Available account: {}", acc.getChatgptEmail());
             }
-            return result;
-        } catch (Exception e) {
-            logger.error("Error searching for ChatGPT email: {}", chatgptEmail, e);
-            throw e;
         }
+        return result;
     }
     
     public List<User> getAllUsers() {

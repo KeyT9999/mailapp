@@ -47,22 +47,20 @@ public class GetOtpController {
     public String getOtp(@RequestParam String chatgptEmail,
                         Model model,
                         HttpServletRequest request) {
-        
-        logger.info("Searching for ChatGPT email: {}", chatgptEmail);
-        
-        if (chatgptEmail == null || chatgptEmail.isEmpty()) {
+        String normalized = chatgptEmail == null ? null : chatgptEmail.trim().toLowerCase();
+        logger.debug("User input email: '{}', normalized: '{}'", chatgptEmail, normalized);
+        if (normalized == null || normalized.isEmpty()) {
             logger.warn("Empty ChatGPT email provided");
             model.addAttribute("error", "Vui lòng nhập email ChatGPT.");
             return "get_otp";
         }
-        
         try {
-            ChatGptAccount account = chatGptAccountService.findByEmail(chatgptEmail).orElse(null);
+            ChatGptAccount account = chatGptAccountService.findByEmail(normalized).orElse(null);
             if (account == null) {
-                logger.warn("ChatGPT email not found in database: {}", chatgptEmail);
+                logger.warn("ChatGPT email not found in database: {}", normalized);
                 model.addAttribute("error", "Không tìm thấy email ChatGPT trong hệ thống!");
             } else {
-                logger.info("Found ChatGPT account for email: {}", chatgptEmail);
+                logger.info("Found ChatGPT account for email: {}", normalized);
                 String otp = TOTPUtil.getTOTPCode(account.getSecretKey());
                 model.addAttribute("otp", otp);
                 
@@ -81,7 +79,7 @@ public class GetOtpController {
                 }
             }
         } catch (Exception e) {
-            logger.error("Error searching for ChatGPT email: {}", chatgptEmail, e);
+            logger.error("Error searching for ChatGPT email: {}", normalized, e);
             model.addAttribute("error", "Có lỗi xảy ra khi tìm kiếm email ChatGPT. Vui lòng thử lại sau.");
         }
         
