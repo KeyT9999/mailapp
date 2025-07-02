@@ -1,19 +1,24 @@
 package com.outlookmail.mailapp.controller;
 
-import com.outlookmail.mailapp.model.ChatGptAccount;
-import com.outlookmail.mailapp.model.User;
-import com.outlookmail.mailapp.service.ChatGptAccountService;
-import com.outlookmail.mailapp.service.OtpRequestService;
-import com.outlookmail.mailapp.util.TOTPUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.outlookmail.mailapp.model.ChatGptAccount;
+import com.outlookmail.mailapp.model.User;
 import com.outlookmail.mailapp.model.UserOtpInfo;
+import com.outlookmail.mailapp.service.ChatGptAccountService;
+import com.outlookmail.mailapp.service.OtpRequestService;
+import com.outlookmail.mailapp.util.TOTPUtil;
 
 @Controller
 @RequestMapping("/admin")
@@ -84,5 +89,52 @@ public class AdminController {
     @GetMapping("/dashboard")
     public String showDashboard() {
         return "admin/dashboard";
+    }
+    
+    @GetMapping("/debug/chatgpt-accounts")
+    @ResponseBody
+    public String debugChatGptAccounts() {
+        try {
+            List<ChatGptAccount> accounts = chatGptAccountService.getAllChatGptAccounts();
+            StringBuilder result = new StringBuilder();
+            result.append("Total ChatGPT accounts: ").append(accounts.size()).append("\n");
+            for (ChatGptAccount account : accounts) {
+                result.append("ID: ").append(account.getId())
+                      .append(", Email: ").append(account.getChatgptEmail())
+                      .append(", SecretKey: ").append(account.getSecretKey())
+                      .append("\n");
+            }
+            return result.toString();
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+    
+    @GetMapping("/debug/test-db")
+    @ResponseBody
+    public String testDatabase() {
+        try {
+            // Test database connection
+            List<ChatGptAccount> accounts = chatGptAccountService.getAllChatGptAccounts();
+            return "Database connection successful. Total accounts: " + accounts.size();
+        } catch (Exception e) {
+            return "Database connection failed: " + e.getMessage();
+        }
+    }
+    
+    @GetMapping("/debug/create-test-account")
+    @ResponseBody
+    public String createTestAccount() {
+        try {
+            // Create a test ChatGPT account
+            ChatGptAccount testAccount = new ChatGptAccount();
+            testAccount.setChatgptEmail("test@example.com");
+            testAccount.setSecretKey("JBSWY3DPEHPK3PXP");
+            
+            ChatGptAccount saved = chatGptAccountService.saveChatGptAccount(testAccount);
+            return "Test account created successfully. ID: " + saved.getId();
+        } catch (Exception e) {
+            return "Failed to create test account: " + e.getMessage();
+        }
     }
 } 

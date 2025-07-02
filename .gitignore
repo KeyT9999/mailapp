@@ -1,6 +1,6 @@
 HELP.md
 target/
-.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -31,3 +31,22 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Logs ###
+*.log
+hs_err_pid*.log
+replay_pid*.log
+
+### Environment variables ###
+.env
+.env.local
+.env.production
+
+### OS generated files ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
