@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch sử IP đăng nhập</title>
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+    <style>
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #fffdfa;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(183,28,28,0.10);
+            padding: 32px 36px 28px 36px;
+        }
+        h2 {
+            color: #b71c1c;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .ip-count {
+            text-align: center;
+            margin-bottom: 18px;
+            font-size: 1.1em;
+            color: #333;
+        }
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+        }
+        .users-table th, .users-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        .users-table th {
+            background: #fff3e0;
+            color: #b71c1c;
+            font-weight: bold;
+        }
+        .users-table tr.highlight-ip {
+            background: #ffe0b2;
+        }
+        .users-table tr:hover {
+            background: #fff8e1;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 18px;
+            color: #b71c1c;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Lịch sử IP đăng nhập của <span th:text="${user.email}"></span></h2>
+        <div class="ip-count">
+            Số IP khác nhau đã từng đăng nhập: <b th:text="${distinctIpCount}"></b>
+        </div>
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Thời gian</th>
+                    <th>IP Address</th>
+                    <th>User Agent</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${history}"
+                    th:classappend="${first2Ips.contains(item.ipAddress)} ? 'highlight-ip'">
+                    <td th:text="${#temporals.format(item.loginTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${item.ipAddress}"></td>
+                    <td th:text="${item.userAgent}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/admin/add-chatgpt-email}" class="back-link">Quay lại danh sách user</a>
+    </div>
+</body>
+</html> 

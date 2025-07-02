@@ -70,4 +70,8 @@ public class ChatGptAccountService {
         logger.info("Getting all ChatGPT accounts");
         return chatGptAccountRepository.findAll();
     }
+    
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
 } 

@@ -73,7 +73,11 @@ public class GetOtpController {
                     if (user != null) {
                         String ipAddress = getClientIpAddress(request);
                         String userAgent = request.getHeader("User-Agent");
-                        otpRequestService.recordOtpRequest(user, ipAddress, userAgent);
+                        boolean allowed = otpRequestService.recordOtpRequestWithIpLimit(user, ipAddress, userAgent);
+                        if (!allowed) {
+                            model.addAttribute("error", "Bạn chỉ được lấy OTP từ tối đa 2 thiết bị/IP đầu tiên đã đăng ký. Nếu cần hỗ trợ, vui lòng liên hệ admin.");
+                            return "get_otp";
+                        }
                         logger.info("Recorded OTP request for user: {}", user.getEmail());
                     }
                 }

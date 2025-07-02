@@ -2,6 +2,7 @@ package com.outlookmail.mailapp.controller;
 
 import com.outlookmail.mailapp.model.User;
 import com.outlookmail.mailapp.service.UserService;
+import com.outlookmail.mailapp.service.UserLoginHistoryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -16,10 +17,12 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     
     private final UserService userService;
+    private final UserLoginHistoryService userLoginHistoryService;
     
     @Autowired
-    public LoginController(UserService userService) {
+    public LoginController(UserService userService, UserLoginHistoryService userLoginHistoryService) {
         this.userService = userService;
+        this.userLoginHistoryService = userLoginHistoryService;
     }
     
     @GetMapping("/login")
@@ -56,6 +59,10 @@ public class LoginController {
                 newSession.setAttribute("user", user);
                 newSession.setMaxInactiveInterval(30 * 60); // 30 minutes
                 logger.info("User {} logged in successfully", email);
+                // Ghi nhận lịch sử IP đăng nhập
+                String ipAddress = getClientIpAddress(request);
+                String userAgent = request.getHeader("User-Agent");
+                userLoginHistoryService.recordLogin(user, ipAddress, userAgent);
                 if (user.isAdmin()) {
                     return "redirect:/admin/add-chatgpt-email";
                 } else {
@@ -83,5 +90,18 @@ public class LoginController {
         } else {
             return "redirect:/user/dashboard";
         }
+    }
+    
+    // Thêm hàm lấy IP client
+    private String getClientIpAddress(HttpServletRequest request) {
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty() && !"unknown".equalsIgnoreCase(xForwardedFor)) {
+            return xForwardedFor.split(",")[0];
+        }
+        String xRealIp = request.getHeader("X-Real-IP");
+        if (xRealIp != null && !xRealIp.isEmpty() && !"unknown".equalsIgnoreCase(xRealIp)) {
+            return xRealIp;
+        }
+        return request.getRemoteAddr();
     }
 } 

@@ -1,13 +1,14 @@
 package com.outlookmail.mailapp.repository;
 
-import com.outlookmail.mailapp.model.OtpRequest;
-import com.outlookmail.mailapp.model.User;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.outlookmail.mailapp.model.OtpRequest;
+import com.outlookmail.mailapp.model.User;
 
 @Repository
 public interface OtpRequestRepository extends JpaRepository<OtpRequest, Long> {
@@ -21,4 +22,7 @@ public interface OtpRequestRepository extends JpaRepository<OtpRequest, Long> {
     
     @Query("SELECT o.user, COUNT(o) as requestCount FROM OtpRequest o WHERE o.user = :user GROUP BY o.user")
     Object[] countRequestsBySpecificUser(@Param("user") User user);
+    
+    @Query("SELECT DISTINCT o.ipAddress FROM OtpRequest o WHERE o.user = :user AND o.ipAddress IS NOT NULL ORDER BY o.requestTime ASC")
+    List<String> findFirst2DistinctIpByUser(@Param("user") User user);
 } 

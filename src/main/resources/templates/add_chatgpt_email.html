@@ -217,6 +217,7 @@
                     <th>Role</th>
                     <th>Số lần get mã</th>
                     <th>Lần cuối get mã</th>
+                    <th>Lịch sử IP</th>
                 </tr>
             </thead>
             <tbody>
@@ -232,6 +233,9 @@
                         <span class="otp-count" th:text="${userOtpInfoMap != null and userOtpInfoMap.containsKey(user.id) ? userOtpInfoMap.get(user.id).getRequestCount() : 0}"></span>
                     </td>
                     <td class="last-request-time" th:text="${userOtpInfoMap != null and userOtpInfoMap.containsKey(user.id) ? userOtpInfoMap.get(user.id).getFormattedLastRequestTime() : 'Chưa có'}"></td>
+                    <td>
+                        <a th:href="@{'/admin/user-login-history'(userId=${user.id})}" target="_blank">Xem lịch sử IP</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

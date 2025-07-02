@@ -3,6 +3,9 @@ package com.outlookmail.mailapp.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,9 @@ import com.outlookmail.mailapp.model.UserOtpInfo;
 import com.outlookmail.mailapp.service.ChatGptAccountService;
 import com.outlookmail.mailapp.service.OtpRequestService;
 import com.outlookmail.mailapp.util.TOTPUtil;
+import com.outlookmail.mailapp.repository.OtpRequestRepository;
+import com.outlookmail.mailapp.repository.UserLoginHistoryRepository;
+import com.outlookmail.mailapp.model.UserLoginHistory;
 
 @Controller
 @RequestMapping("/admin")
@@ -26,12 +32,18 @@ public class AdminController {
     
     private final ChatGptAccountService chatGptAccountService;
     private final OtpRequestService otpRequestService;
+    private final OtpRequestRepository otpRequestRepository;
+    private final UserLoginHistoryRepository userLoginHistoryRepository;
     
     @Autowired
     public AdminController(ChatGptAccountService chatGptAccountService, 
-                         OtpRequestService otpRequestService) {
+                         OtpRequestService otpRequestService,
+                         OtpRequestRepository otpRequestRepository,
+                         UserLoginHistoryRepository userLoginHistoryRepository) {
         this.chatGptAccountService = chatGptAccountService;
         this.otpRequestService = otpRequestService;
+        this.otpRequestRepository = otpRequestRepository;
+        this.userLoginHistoryRepository = userLoginHistoryRepository;
     }
     
     @GetMapping("/add-chatgpt-email")
@@ -136,5 +148,26 @@ public class AdminController {
         } catch (Exception e) {
             return "Failed to create test account: " + e.getMessage();
         }
+    }
+    
+    @GetMapping("/user-login-history")
+    public String showUserLoginHistory(@RequestParam Long userId, Model model) {
+        User user = chatGptAccountService.getUserById(userId);
+        List<UserLoginHistory> history = userLoginHistoryRepository.findByUserOrderByLoginTimeDesc(user);
+        List<UserLoginHistory> historyAsc = userLoginHistoryRepository.findByUserOrderByLoginTimeAsc(user);
+        List<String> first2Ips = new ArrayList<>();
+        Set<String> seen = new HashSet<>();
+        for (UserLoginHistory h : historyAsc) {
+            if (h.getIpAddress() != null && seen.add(h.getIpAddress())) {
+                first2Ips.add(h.getIpAddress());
+                if (first2Ips.size() == 2) break;
+            }
+        }
+        long distinctIpCount = userLoginHistoryRepository.countDistinctIpByUser(user);
+        model.addAttribute("user", user);
+        model.addAttribute("history", history);
+        model.addAttribute("first2Ips", first2Ips);
+        model.addAttribute("distinctIpCount", distinctIpCount);
+        return "admin/user_login_history";
     }
 } 

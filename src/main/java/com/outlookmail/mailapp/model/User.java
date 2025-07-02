@@ -12,7 +12,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(name = "username")
     private String username;
     
@@ -20,11 +20,11 @@ public class User {
     @Email
     @Column(name = "email", unique = true, nullable = false)
     private String email;
-    
+
     @NotBlank
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
-    
+
     @NotNull
     @Column(name = "role", nullable = false)
     private String role;
