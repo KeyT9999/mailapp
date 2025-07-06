@@ -6,7 +6,8 @@
     <title>Email Reader - Login</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📧</text></svg>">
     <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,153 +16,565 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff1744 0%, #d50000 50%, #b71c1c 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
         }
 
         .brand-keyt {
             text-align: center;
-            margin-top: 48px;
-            margin-bottom: 32px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 10;
         }
 
-        .center-container {
+        .brand-keyt span {
+            font-size: 3em;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffffff, #ffebee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(255,255,255,0.8)); }
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            gap: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .left-panel, .right-panel {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .center-panel {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .login-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .service-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .service-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
-            max-width: 400px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .service-box:hover::before {
+            left: 100%;
+        }
+
+        .service-box:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: #ff1744;
+        }
+
+        .service-box:active {
+            transform: scale(0.98);
+        }
+
+        .service-box::after {
+            content: "💬 Click để liên hệ";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(45deg, #ff1744, #d50000);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.3s ease;
+            transform: translateY(-10px);
+        }
+
+        .service-box:hover::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .service-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .service-price {
+            font-size: 1rem;
+            color: #ff1744;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .service-description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 23, 68, 0.1), transparent);
+            animation: rotate 6s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .login-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
         }
 
         .login-header h1 {
-            color: #1a1a1a;
-            font-size: 1.75rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            color: #d50000;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
         .login-header p {
             color: #666;
-            font-size: 0.875rem;
+            font-size: 1rem;
+            font-weight: 400;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #1a1a1a;
-            font-size: 0.875rem;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 0.95rem;
             font-weight: 500;
         }
 
         .form-group input {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
             font-size: 1rem;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: #3182ce;
-            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+            border-color: #ff1744;
+            box-shadow: 0 0 0 4px rgba(255, 23, 68, 0.1);
+            transform: translateY(-2px);
         }
 
         .submit-btn {
             width: 100%;
-            padding: 0.75rem;
-            background-color: #3182ce;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff1744, #d50000);
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-weight: 500;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
         }
 
         .submit-btn:hover {
-            background-color: #2c5282;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 23, 68, 0.4);
         }
 
         .error-message {
-            background-color: #fed7d7;
-            color: #c53030;
-            padding: 0.75rem;
-            border-radius: 4px;
-            margin-bottom: 1.5rem;
-            font-size: 0.875rem;
+            background: linear-gradient(45deg, #ffebee, #ffcdd2);
+            color: #c62828;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            border-left: 4px solid #ff1744;
+            position: relative;
+            z-index: 2;
         }
 
         .register-link {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 25px;
+            position: relative;
+            z-index: 2;
         }
 
         .register-link a {
-            color: #007bff;
+            color: #ff1744;
             text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .register-link a:hover {
+            color: #d50000;
+        }
+
+        .guide-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .guide-header {
+            background: linear-gradient(45deg, #4caf50, #2e7d32);
+            color: white;
+            padding: 20px 25px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .guide-content {
+            padding: 25px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .guide-content h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .guide-content ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .guide-content li {
+            margin-bottom: 10px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .guide-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .contact-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff1744, #d50000);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 15px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .contact-btn:hover::before {
+            left: 100%;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 23, 68, 0.4);
+        }
+
+        /* Floating particles animation */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .left-panel, .right-panel {
+                max-width: 100%;
+                width: 100%;
+            }
         }
 
         @media (max-width: 480px) {
+            .main-container {
+                padding: 0 15px;
+            }
+            
             .login-container {
                 margin: 1rem;
-                padding: 1.5rem;
+                padding: 30px 25px;
+            }
+
+            .brand-keyt span {
+                font-size: 2.2em;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Floating particles -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 7s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 8s;"></div>
+    </div>
+
     <div class="brand-keyt">
-        <span style="font-size:2.5em; color:#b71c1c; font-weight:bold; letter-spacing:2px; text-shadow:1px 1px 0 #fff3e0;">Tiệm Tạp Hóa KeyT</span>
+        <span><i class="fas fa-store"></i> Tiệm Tạp Hóa KeyT</span>
     </div>
     
-    <div class="center-container">
-        <div class="login-container">
-            <div class="login-header">
-                <h1>Email Reader</h1>
-                <p>Sign in to access your emails</p>
+    <div class="main-container">
+        <!-- Left Panel - Services -->
+        <div class="left-panel">
+            <div class="service-box" onclick="window.open('https://zalo.me/0868899104', '_blank')">
+                <div class="service-title"><i class="fas fa-film"></i> Netflix Premium</div>
+                <div class="service-price">89K / 1 tháng</div>
+                <div class="service-description">Xem phim với chất lượng cao nhất. Nếu mua 3 tháng chỉ còn 79K</div>
             </div>
+            
+            <div class="service-box" onclick="window.open('https://zalo.me/0868899104', '_blank')">
+                <div class="service-title"><i class="fas fa-palette"></i> Canva Pro</div>
+                <div class="service-price">189K / 1 năm 🎁</div>
+                <div class="service-description">Nâng lên bản Canva Thương hiệu, up được font chữ,…</div>
+            </div>
+            
+            <div class="service-box" onclick="window.open('https://zalo.me/0868899104', '_blank')">
+                <div class="service-title"><i class="fas fa-cut"></i> Capcut Pro</div>
+                <div class="service-price">750K / 1 năm Nâng Chính Chủ</div>
+                <div class="service-description">Chỉnh sửa video chuyên nghiệp với hiệu ứng cao cấp</div>
+            </div>
+            
+            <div class="service-box" onclick="window.open('https://zalo.me/0868899104', '_blank')">
+                <div class="service-title"><i class="fas fa-tv"></i> Vieon VIP</div>
+                <div class="service-price">49K / 1 tháng</div>
+                <div class="service-description">Xem phim Việt Nam và quốc tế không giới hạn</div>
+            </div>
+            
+            <div class="service-box" onclick="window.open('https://zalo.me/0868899104', '_blank')">
+                <div class="service-title"><i class="fas fa-cloud"></i> Google 2TB</div>
+                <div class="service-price">299K / 1 năm</div>
+                <div class="service-description">Lưu trữ đám mây an toàn với 2TB dung lượng</div>
+            </div>
+            
+            <div class="service-box" onclick="window.open('https://zalo.me/0868899104', '_blank')">
+                <div class="service-title"><i class="fas fa-music"></i> Spotify Premium</div>
+                <div class="service-price">365K / 1 năm</div>
+                <div class="service-description">Nghe nhạc không quảng cáo với chất lượng cao</div>
+            </div>
+            
+            <a href="https://zalo.me/0868899104" target="_blank" class="contact-btn">
+                <i class="fab fa-facebook-messenger"></i> Liên hệ Zalo ngay
+            </a>
+        </div>
 
-            <div th:if="${error}" class="error-message" th:text="${error}"></div>
-
-            <form th:action="@{/login}" method="post">
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+        <!-- Center Panel - Login Form -->
+        <div class="center-panel">
+            <div class="login-container">
+                <div class="login-header">
+                    <h1><i class="fas fa-envelope"></i> Email Reader</h1>
+                    <p>Đăng nhập để truy cập email của bạn</p>
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Mật khẩu:</label>
-                    <input type="password" id="password" name="password" required>
+                <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+                <form th:action="@{/login}" method="post">
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+                        <input type="email" id="email" name="email" required placeholder="Nhập email của bạn">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> Mật khẩu:</label>
+                        <input type="password" id="password" name="password" required placeholder="Nhập mật khẩu">
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                    </button>
+                </form>
+
+                <div class="register-link">
+                    <p>Bạn chưa có tài khoản? <a th:href="@{/register}">Đăng ký ngay</a></p>
                 </div>
+            </div>
+        </div>
 
-                <button type="submit" class="submit-btn">Đăng nhập</button>
-            </form>
-
-            <div class="register-link">
-                <p>Bạn chưa có tài khoản? <a th:href="@{/register}">Đăng ký</a></p>
+        <!-- Right Panel - Guide -->
+        <div class="right-panel">
+            <div class="guide-box">
+                <div class="guide-header">
+                    <i class="fas fa-info-circle"></i> Hướng dẫn đăng nhập
+                </div>
+                <div class="guide-content">
+                    <p>• Đăng ký và đăng nhập bằng email cá nhân của mình nha</p>
+                    <p>• Sau khi đăng nhập thì nhập Mail GPT mà Sốp cấp để lấy mã OTP nhé</p>
+                    <p>• Mọi người nhớ đăng ký và đăng nhập bằng email cá nhân của mình nha!</p>
+                    <p>• Sau khi vào được rồi thì nhập mail GPT mà Sốp gửi để nhận mã OTP siêu tốc nhé~</p>
+                    
+                    <h3><i class="fas fa-exclamation-triangle"></i> ✨ Lưu ý nhẹ</h3>
+                    <p>Chỉ nên đăng nhập trên 1–2 thiết bị thôi nghen, để bảo vệ tài khoản của mình và giúp mọi người cùng dùng mượt mà. Sốp có theo dõi lịch sử đăng nhập, nếu thấy quá 2 thiết bị thì Sốp… đá nhẹ ra luôn đó! 😅</p>
+                </div>
             </div>
         </div>
     </div>

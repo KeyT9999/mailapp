@@ -119,6 +119,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.outlookmail.mailapp.MailappApplication</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
