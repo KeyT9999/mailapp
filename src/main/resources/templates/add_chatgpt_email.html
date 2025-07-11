@@ -184,6 +184,27 @@
         a:hover {
             color: #ff9800;
         }
+
+        .nav-links {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .nav-links a {
+            color: #b71c1c;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            padding: 8px 16px;
+            border: 2px solid #b71c1c;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #b71c1c;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -192,6 +213,12 @@
     </div>
     
     <a th:href="@{/logout}" class="logout-link">Đăng xuất</a>
+    
+    <div class="nav-links">
+        <a th:href="@{/admin/dashboard}">Dashboard</a>
+        <a th:href="@{/admin/add-chatgpt-email}">Thêm Email ChatGPT</a>
+        <a th:href="@{/admin/chatgpt-accounts}">Quản lý Email ChatGPT</a>
+    </div>
     
     <h2>Thêm email ChatGPT</h2>
     

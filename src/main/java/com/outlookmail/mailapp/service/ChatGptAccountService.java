@@ -74,4 +74,31 @@ public class ChatGptAccountService {
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
+    
+    public ChatGptAccount getChatGptAccountById(Long id) {
+        return chatGptAccountRepository.findById(id).orElse(null);
+    }
+    
+    public ChatGptAccount updateChatGptAccount(Long id, String chatgptEmail, String secretKey) {
+        ChatGptAccount account = chatGptAccountRepository.findById(id).orElse(null);
+        if (account != null) {
+            if (chatgptEmail != null) {
+                String normalized = chatgptEmail.trim().toLowerCase();
+                account.setChatgptEmail(normalized);
+            }
+            if (secretKey != null) {
+                account.setSecretKey(secretKey);
+            }
+            return chatGptAccountRepository.save(account);
+        }
+        return null;
+    }
+    
+    public boolean deleteChatGptAccount(Long id) {
+        if (chatGptAccountRepository.existsById(id)) {
+            chatGptAccountRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 } 

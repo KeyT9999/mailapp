@@ -199,10 +199,15 @@
 
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title">Outlook Accounts</h2>
-                <a th:href="@{/admin/add-chatgpt-email}" class="add-account-btn">
-                    Add ChatGPT Account
-                </a>
+                <h2 class="card-title">Quản lý Email ChatGPT</h2>
+                <div>
+                    <a th:href="@{/admin/add-chatgpt-email}" class="add-account-btn" style="margin-right: 10px;">
+                        Thêm Email ChatGPT
+                    </a>
+                    <a th:href="@{/admin/chatgpt-accounts}" class="add-account-btn" style="background-color: #059669;">
+                        Quản lý Email ChatGPT
+                    </a>
+                </div>
             </div>
 
             <table class="accounts-table">

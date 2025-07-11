@@ -170,4 +170,73 @@ public class AdminController {
         model.addAttribute("distinctIpCount", distinctIpCount);
         return "admin/user_login_history";
     }
+    
+    @GetMapping("/chatgpt-accounts")
+    public String showChatGptAccounts(Model model) {
+        List<ChatGptAccount> accounts = chatGptAccountService.getAllChatGptAccounts();
+        model.addAttribute("accounts", accounts);
+        return "admin/chatgpt_accounts";
+    }
+    
+    @GetMapping("/edit-chatgpt-account")
+    public String showEditChatGptAccount(@RequestParam Long id, Model model) {
+        ChatGptAccount account = chatGptAccountService.getChatGptAccountById(id);
+        if (account == null) {
+            model.addAttribute("error", "Không tìm thấy tài khoản ChatGPT với ID: " + id);
+            return "redirect:/admin/chatgpt-accounts";
+        }
+        model.addAttribute("account", account);
+        return "admin/edit_chatgpt_account";
+    }
+    
+    @PostMapping("/update-chatgpt-account")
+    public String updateChatGptAccount(@RequestParam Long id,
+                                     @RequestParam String chatgptEmail,
+                                     @RequestParam String secretKey,
+                                     Model model) {
+        
+        if (chatgptEmail == null || secretKey == null || 
+            chatgptEmail.isEmpty() || secretKey.isEmpty()) {
+            model.addAttribute("error", "Vui lòng nhập đầy đủ thông tin.");
+            ChatGptAccount account = chatGptAccountService.getChatGptAccountById(id);
+            model.addAttribute("account", account);
+            return "admin/edit_chatgpt_account";
+        }
+        
+        try {
+            ChatGptAccount updatedAccount = chatGptAccountService.updateChatGptAccount(id, chatgptEmail, secretKey);
+            if (updatedAccount != null) {
+                String otp = TOTPUtil.getTOTPCode(secretKey);
+                model.addAttribute("success", "Cập nhật email ChatGPT thành công!<br>SecretKey: <b>" + 
+                                  secretKey + "</b><br>Mã 2FA hiện tại: <b style='color:#b71c1c;font-size:1.3em'>" + 
+                                  otp + "</b>");
+            } else {
+                model.addAttribute("error", "Không tìm thấy tài khoản để cập nhật!");
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "Cập nhật email ChatGPT thất bại: " + e.getMessage());
+        }
+        
+        ChatGptAccount account = chatGptAccountService.getChatGptAccountById(id);
+        model.addAttribute("account", account);
+        return "admin/edit_chatgpt_account";
+    }
+    
+    @PostMapping("/delete-chatgpt-account")
+    public String deleteChatGptAccount(@RequestParam Long id, Model model) {
+        try {
+            boolean deleted = chatGptAccountService.deleteChatGptAccount(id);
+            if (deleted) {
+                model.addAttribute("success", "Xóa email ChatGPT thành công!");
+            } else {
+                model.addAttribute("error", "Không tìm thấy tài khoản để xóa!");
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "Xóa email ChatGPT thất bại: " + e.getMessage());
+        }
+        
+        List<ChatGptAccount> accounts = chatGptAccountService.getAllChatGptAccounts();
+        model.addAttribute("accounts", accounts);
+        return "admin/chatgpt_accounts";
+    }
 } 

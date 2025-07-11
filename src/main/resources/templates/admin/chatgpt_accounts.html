@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Email ChatGPT</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📧</text></svg>">
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+    <style>
+        body {
+            background: #fff8f0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #b71c1c;
+            margin: 0;
+            padding: 0;
+        }
+
+        .brand-keyt {
+            text-align: center;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        .logout-link {
+            float: right;
+            color: #b71c1c;
+            font-weight: bold;
+            margin: 18px 24px 0 0;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .nav-links a {
+            color: #b71c1c;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            padding: 8px 16px;
+            border: 2px solid #b71c1c;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #b71c1c;
+            color: white;
+        }
+
+        h2 {
+            color: #b71c1c;
+            text-align: center;
+            margin-top: 30px;
+            letter-spacing: 1px;
+        }
+
+        .accounts-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .accounts-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(183,28,28,0.1);
+        }
+
+        .accounts-table th,
+        .accounts-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .accounts-table th {
+            background: linear-gradient(90deg, #ff9800 0%, #b71c1c 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .accounts-table tr:hover {
+            background-color: #fff8f0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-edit {
+            background: #2196f3;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .error {
+            color: #d32f2f !important;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .success {
+            color: #388e3c !important;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .secret-key {
+            font-family: monospace;
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .add-account-btn {
+            background: linear-gradient(90deg, #ff9800 0%, #b71c1c 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .add-account-btn:hover {
+            background: linear-gradient(90deg, #b71c1c 0%, #ff9800 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="brand-keyt">
+        <span style="font-size:2.2em; color:#b71c1c; font-weight:bold; letter-spacing:2px; text-shadow:1px 1px 0 #fff3e0;">Tiệm Tạp Hóa KeyT</span>
+    </div>
+    
+    <a th:href="@{/logout}" class="logout-link">Đăng xuất</a>
+    
+    <div class="nav-links">
+        <a th:href="@{/admin/dashboard}">Dashboard</a>
+        <a th:href="@{/admin/add-chatgpt-email}">Thêm Email ChatGPT</a>
+        <a th:href="@{/admin/chatgpt-accounts}">Quản lý Email ChatGPT</a>
+    </div>
+    
+    <h2>Quản lý Email ChatGPT</h2>
+    
+    <div class="accounts-container">
+        <a th:href="@{/admin/add-chatgpt-email}" class="add-account-btn">+ Thêm Email ChatGPT Mới</a>
+        
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <div th:if="${success}" class="success" th:utext="${success}"></div>
+        
+        <table class="accounts-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email ChatGPT</th>
+                    <th>Secret Key</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(accounts)}">
+                    <td colspan="4" class="empty-message">
+                        Chưa có email ChatGPT nào trong hệ thống.
+                    </td>
+                </tr>
+                <tr th:each="account : ${accounts}">
+                    <td th:text="${account.id}"></td>
+                    <td th:text="${account.chatgptEmail}"></td>
+                    <td>
+                        <span class="secret-key" th:text="${account.secretKey}"></span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <a th:href="@{'/admin/edit-chatgpt-account'(id=${account.id})}" 
+                               class="btn btn-edit">Sửa</a>
+                            <form th:action="@{/admin/delete-chatgpt-account}" method="post" 
+                                  style="display: inline;" 
+                                  onsubmit="return confirm('Bạn có chắc chắn muốn xóa email này?');">
+                                <input type="hidden" name="id" th:value="${account.id}">
+                                <button type="submit" class="btn btn-delete">Xóa</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script th:src="@{/burst.js}" src="/burst.js"></script>
+</html> 
