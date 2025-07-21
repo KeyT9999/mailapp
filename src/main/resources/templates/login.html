@@ -317,6 +317,31 @@
             color: #d50000;
         }
 
+        .forgot-password-link {
+            text-align: center;
+            margin-top: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .forgot-password-link a {
+            color: #b71c1c;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(183, 28, 28, 0.1);
+            display: inline-block;
+        }
+
+        .forgot-password-link a:hover {
+            color: #ffffff;
+            background: linear-gradient(45deg, #b71c1c, #ff9800);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(183, 28, 28, 0.3);
+        }
+
         .guide-box {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 25px;
@@ -556,6 +581,12 @@
 
                 <div class="register-link">
                     <p>Bạn chưa có tài khoản? <a th:href="@{/register}">Đăng ký ngay</a></p>
+                </div>
+                
+                <div class="forgot-password-link">
+                    <a th:href="@{/forgot-password}">
+                        <i class="fas fa-key"></i> Quên mật khẩu?
+                    </a>
                 </div>
             </div>
         </div>
