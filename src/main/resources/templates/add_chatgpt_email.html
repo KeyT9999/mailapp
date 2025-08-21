@@ -1,272 +1,440 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm email ChatGPT</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📧</text></svg>">
-    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+    <title>Thêm ChatGPT Email - Admin</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="stylesheet" th:href="@{/modern-styles.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="page-background">
+        
+        <!-- Admin Navigation Header -->
+        <nav class="admin-nav animate-slide-in">
+            <div class="container flex items-center justify-between" style="padding: var(--space-4) var(--space-4);">
+                <div class="flex items-center gap-4">
+                    <div class="admin-badge">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div>
+                        <h1 class="heading-5" style="color: var(--neutral-800); margin: 0;">Admin Panel</h1>
+                        <p class="caption" style="color: var(--neutral-600); margin: 0;">Quản lý ChatGPT Accounts</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <a th:href="@{/admin/dashboard}" class="btn btn-ghost">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </a>
+                    <a th:href="@{/admin/chatgpt-accounts}" class="btn btn-outline">
+                        <i class="fas fa-list"></i>
+                        Accounts
+                    </a>
+                    <a th:href="@{/logout}" class="btn btn-outline">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Đăng xuất
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container" style="padding: var(--space-8) var(--space-4);">
+            
+            <!-- Header Section -->
+            <div class="text-center mb-8 animate-fade-in">
+                <div class="feature-icon-large mb-4">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h1 class="heading-2 mb-2" style="color: var(--neutral-800);">Thêm ChatGPT Email</h1>
+                <p class="body-large" style="color: var(--neutral-600);">
+                    Thêm email ChatGPT mới với secret key để tạo mã OTP
+                </p>
+            </div>
+
+            <!-- Add Email Form -->
+            <div class="card animate-scale-in" style="animation-delay: 0.2s; max-width: 600px; margin: 0 auto var(--space-8);">
+                
+                <!-- Alerts -->
+                <div th:if="${error}" class="alert alert-error animate-slide-in">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span th:text="${error}"></span>
+                </div>
+
+                <div th:if="${success}" class="alert alert-success animate-slide-in">
+                    <i class="fas fa-check-circle"></i>
+                    <span th:utext="${success}"></span>
+                </div>
+
+                <!-- Form -->
+                <form th:action="@{/admin/add-chatgpt-email}" method="post" id="addEmailForm">
+                    
+                    <!-- ChatGPT Email Input -->
+                    <div class="input-group">
+                        <label for="chatgptEmail" class="input-label">
+                            <i class="fas fa-robot" style="margin-right: 0.5rem; color: var(--secondary-500);"></i>
+                            Email ChatGPT
+                        </label>
+                        <input type="email" 
+                               id="chatgptEmail" 
+                               name="chatgptEmail" 
+                               class="input"
+                               placeholder="Nhập email ChatGPT (ví dụ: user@example.com)"
+                               required 
+                               autocomplete="email">
+                    </div>
+
+                    <!-- Secret Key Input -->
+                    <div class="input-group">
+                        <label for="secretKey" class="input-label">
+                            <i class="fas fa-key" style="margin-right: 0.5rem; color: var(--accent-500);"></i>
+                            Secret Key (2FA)
+                        </label>
+                        <div style="position: relative;">
+                            <input type="text" 
+                                   id="secretKey" 
+                                   name="secretKey" 
+                                   class="input"
+                                   placeholder="Nhập secret key 2FA (ví dụ: JBSWY3DPEHPK3PXP)"
+                                   required>
+                            <button type="button" class="input-icon" onclick="toggleSecretKey()">
+                                <i class="fas fa-eye" id="secretKeyToggleIcon"></i>
+                            </button>
+                        </div>
+                        <div class="input-feedback" id="secretKeyFeedback"></div>
+                    </div>
+
+                    <!-- Preview OTP -->
+                    <div class="otp-preview" id="otpPreview" style="display: none;">
+                        <div class="preview-header">
+                            <i class="fas fa-eye"></i>
+                            <span>Preview OTP hiện tại:</span>
+                        </div>
+                        <div class="preview-code" id="previewCode">------</div>
+                        <button type="button" class="btn btn-ghost btn-sm" onclick="refreshPreview()">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary btn-full btn-lg" id="submitBtn">
+                        <i class="fas fa-plus-circle"></i>
+                        Thêm ChatGPT Email
+                    </button>
+
+                </form>
+            </div>
+
+            <!-- Users Overview -->
+            <div class="animate-slide-in" style="animation-delay: 0.4s;">
+                <h2 class="heading-3 mb-6 text-center" style="color: var(--neutral-800);">Thống kê Users & OTP</h2>
+                
+                <div class="users-grid">
+                    <div th:each="user : ${users}" class="user-card">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <h4 class="user-name" th:text="${user.email}">user@example.com</h4>
+                            <p class="user-role" th:text="${user.role}">user</p>
+                        </div>
+                        <div class="user-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">OTP Requests:</span>
+                                <span class="stat-value" th:text="${userOtpInfoMap[user.id]?.requestCount ?: 0}">0</span>
+                            </div>
+                            <div class="stat-item" th:if="${userOtpInfoMap[user.id]?.lastRequestTime}">
+                                <span class="stat-label">Lần cuối:</span>
+                                <span class="stat-value-small" th:text="${userOtpInfoMap[user.id]?.formattedLastRequestTime}">-</span>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <a th:href="@{/admin/user-login-history(userId=${user.id})}" class="btn btn-ghost btn-sm">
+                                <i class="fas fa-history"></i>
+                                Lịch sử
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Toggle secret key visibility
+        function toggleSecretKey() {
+            const input = document.getElementById('secretKey');
+            const icon = document.getElementById('secretKeyToggleIcon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        // Generate preview OTP (mock function - replace with actual TOTP generation)
+        function generatePreviewOTP(secretKey) {
+            // This is a mock function. In real implementation, you'd call your TOTP utility
+            if (secretKey && secretKey.length >= 16) {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+            return '------';
+        }
+
+        // Update OTP preview
+        function updateOTPPreview() {
+            const secretKey = document.getElementById('secretKey').value;
+            const preview = document.getElementById('otpPreview');
+            const previewCode = document.getElementById('previewCode');
+            const feedback = document.getElementById('secretKeyFeedback');
+            
+            if (secretKey && secretKey.length >= 16) {
+                const otp = generatePreviewOTP(secretKey);
+                previewCode.textContent = otp;
+                preview.style.display = 'block';
+                feedback.innerHTML = '<span style="color: var(--success-600);"><i class="fas fa-check-circle"></i> Secret key hợp lệ</span>';
+            } else if (secretKey) {
+                preview.style.display = 'none';
+                feedback.innerHTML = '<span style="color: var(--error-600);"><i class="fas fa-times-circle"></i> Secret key quá ngắn (tối thiểu 16 ký tự)</span>';
+            } else {
+                preview.style.display = 'none';
+                feedback.innerHTML = '';
+            }
+        }
+
+        // Refresh preview
+        function refreshPreview() {
+            updateOTPPreview();
+        }
+
+        // Form enhancement
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('addEmailForm');
+            const secretKeyInput = document.getElementById('secretKey');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Real-time secret key validation
+            secretKeyInput.addEventListener('input', updateOTPPreview);
+
+            // Form submission with loading state
+            form.addEventListener('submit', function(e) {
+                const originalContent = submitBtn.innerHTML;
+                
+                submitBtn.innerHTML = `
+                    <div class="loading-spinner"></div>
+                    Đang thêm email...
+                `;
+                submitBtn.disabled = true;
+                
+                // Re-enable if form validation fails
+                setTimeout(() => {
+                    if (!form.checkValidity()) {
+                        submitBtn.innerHTML = originalContent;
+                        submitBtn.disabled = false;
+                    }
+                }, 100);
+            });
+        });
+    </script>
+
+    <!-- Custom styles for admin pages -->
     <style>
-        body {
-            background: #fff8f0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            color: #b71c1c;
-            margin: 0;
-            padding: 0;
+        .admin-nav {
+            backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(255, 140, 0, 0.1));
+            border-bottom: 2px solid rgba(255, 140, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: var(--shadow-lg);
         }
 
-        .brand-keyt {
-            text-align: center;
-            margin-top: 18px;
-            margin-bottom: 8px;
+        .admin-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF8C00, #FF6347);
+            color: white;
+            font-size: var(--text-lg);
         }
 
-        .logout-link {
-            float: right;
-            color: #b71c1c;
-            font-weight: bold;
-            margin: 18px 24px 0 0;
-            text-decoration: none;
-            font-size: 1.1em;
+        .feature-icon-large {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient-secondary);
+            color: white;
+            font-size: var(--text-3xl);
+            animation: pulse-glow 2s ease-in-out infinite;
         }
 
-        h2 {
-            color: #b71c1c;
-            text-align: center;
-            margin-top: 30px;
-            letter-spacing: 1px;
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 70, 239, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(212, 70, 239, 0); }
         }
 
-        form {
-            background: #fff;
-            border: 2px solid #b71c1c;
-            border-radius: 12px;
-            max-width: 400px;
-            margin: 30px auto;
-            padding: 32px 28px 24px 28px;
-            box-shadow: 0 4px 16px rgba(183,28,28,0.08);
-        }
-
-        label {
-            color: #b71c1c;
-            font-weight: bold;
-        }
-
-        input[type="email"], input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 18px 0;
-            border: 1.5px solid #b71c1c;
-            border-radius: 6px;
-            background: #fffdfa;
-            font-size: 1em;
-            color: #b71c1c;
-        }
-
-        button {
-            width: 100%;
-            background: linear-gradient(90deg, #ff9800 0%, #b71c1c 100%);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 0;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 2px 8px rgba(183,28,28,0.08);
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: linear-gradient(90deg, #b71c1c 0%, #ff9800 100%);
-        }
-
-        .error {
-            color: #d32f2f !important;
-            font-weight: bold;
-            margin: 10px 0 0 0;
+        .otp-preview {
+            background: linear-gradient(135deg, var(--primary-50), var(--secondary-50));
+            border-radius: var(--rounded-xl);
+            padding: var(--space-4);
+            margin: var(--space-4) 0;
+            border: 2px solid var(--primary-200);
             text-align: center;
         }
 
-        .success {
-            color: #388e3c !important;
-            font-weight: bold;
-            margin: 10px 0 0 0;
-            text-align: center;
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-3);
+            color: var(--primary-700);
+            font-weight: var(--font-medium);
+            font-size: var(--text-sm);
         }
 
-        .users-list {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 4px;
+        .preview-code {
+            font-family: 'Courier New', monospace;
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+            color: var(--primary-700);
+            background: white;
+            padding: var(--space-3);
+            border-radius: var(--rounded-lg);
+            letter-spacing: 0.2em;
+            margin-bottom: var(--space-3);
+            border: 1px solid var(--primary-300);
         }
 
-        .users-list h3 {
-            margin-top: 0;
-            color: #333;
+        .input-feedback {
+            font-size: var(--text-sm);
+            margin-top: var(--space-2);
+            min-height: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
         }
 
-        .user-item {
-            padding: 8px 0;
-            border-bottom: 1px solid #dee2e6;
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: var(--space-4);
+        }
+
+        .user-card {
+            background: var(--gradient-glass);
+            backdrop-filter: blur(20px);
+            border-radius: var(--rounded-2xl);
+            padding: var(--space-6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .user-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .user-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: var(--text-lg);
+            margin-bottom: var(--space-4);
+        }
+
+        .user-name {
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            color: var(--neutral-800);
+            margin-bottom: var(--space-1);
+        }
+
+        .user-role {
+            font-size: var(--text-sm);
+            color: var(--neutral-600);
+            margin-bottom: var(--space-4);
+            text-transform: capitalize;
+        }
+
+        .user-stats {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+        }
+
+        .stat-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .user-item:last-child {
-            border-bottom: none;
+        .stat-label {
+            font-size: var(--text-sm);
+            color: var(--neutral-600);
         }
 
-        .user-info {
+        .stat-value {
+            font-weight: var(--font-semibold);
+            color: var(--primary-600);
+        }
+
+        .stat-value-small {
+            font-size: var(--text-xs);
+            color: var(--neutral-500);
+        }
+
+        .user-actions {
             display: flex;
-            flex-direction: column;
+            gap: var(--space-2);
         }
 
-        .user-email {
-            font-weight: bold;
-            color: #333;
+        .loading-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: var(--space-2);
         }
 
-        .user-role {
-            font-size: 0.8em;
-            color: #666;
-            margin-top: 2px;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .otp-count {
-            background: linear-gradient(90deg, #ff9800 0%, #b71c1c 100%);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            font-weight: bold;
-            min-width: 30px;
-            text-align: center;
-        }
-
-        .users-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        .users-table th,
-        .users-table td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .users-table th {
-            background-color: #f1f3f4;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .users-table tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .last-request-time {
-            font-size: 0.8em;
-            color: #666;
-        }
-
-        a {
-            color: #b71c1c;
-            text-decoration: underline;
-            font-weight: bold;
-        }
-
-        a:hover {
-            color: #ff9800;
-        }
-
-        .nav-links {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .nav-links a {
-            color: #b71c1c;
-            text-decoration: none;
-            font-weight: bold;
-            margin: 0 15px;
-            padding: 8px 16px;
-            border: 2px solid #b71c1c;
-            border-radius: 6px;
-            transition: all 0.3s;
-        }
-
-        .nav-links a:hover {
-            background: #b71c1c;
-            color: white;
+        @media (max-width: 768px) {
+            .users-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav .flex {
+                flex-wrap: wrap;
+                gap: var(--space-2);
+            }
         }
     </style>
-</head>
-<body>
-    <div class="brand-keyt">
-        <span style="font-size:2.2em; color:#b71c1c; font-weight:bold; letter-spacing:2px; text-shadow:1px 1px 0 #fff3e0;">Tiệm Tạp Hóa KeyT</span>
-    </div>
-    
-    <a th:href="@{/logout}" class="logout-link">Đăng xuất</a>
-    
-    <div class="nav-links">
-        <a th:href="@{/admin/dashboard}">Dashboard</a>
-        <a th:href="@{/admin/add-chatgpt-email}">Thêm Email ChatGPT</a>
-        <a th:href="@{/admin/chatgpt-accounts}">Quản lý Email ChatGPT</a>
-    </div>
-    
-    <h2>Thêm email ChatGPT</h2>
-    
-    <form th:action="@{/admin/add-chatgpt-email}" method="post">
-        <label>Email ChatGPT:</label>
-        <input type="email" name="chatgptEmail" required>
-        
-        <label>Secret Key:</label>
-        <input type="text" name="secretKey" required>
-        
-        <button type="submit">Thêm email ChatGPT</button>
-    </form>
-    
-    <div th:if="${error}" class="error" th:text="${error}"></div>
-    <div th:if="${success}" class="success" th:utext="${success}"></div>
-    
-    <div class="users-list">
-        <h3>Danh sách Users:</h3>
-        <table class="users-table">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Số lần get mã</th>
-                    <th>Lần cuối get mã</th>
-                    <th>Lịch sử IP</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:if="${#lists.isEmpty(users)}">
-                    <td colspan="4" style="text-align: center; padding: 2rem;">
-                        Không có user nào trong hệ thống.
-                    </td>
-                </tr>
-                <tr th:each="user : ${users}">
-                    <td th:text="${user.email}"></td>
-                    <td th:text="${user.role}"></td>
-                    <td>
-                        <span class="otp-count" th:text="${userOtpInfoMap != null and userOtpInfoMap.containsKey(user.id) ? userOtpInfoMap.get(user.id).getRequestCount() : 0}"></span>
-                    </td>
-                    <td class="last-request-time" th:text="${userOtpInfoMap != null and userOtpInfoMap.containsKey(user.id) ? userOtpInfoMap.get(user.id).getFormattedLastRequestTime() : 'Chưa có'}"></td>
-                    <td>
-                        <a th:href="@{'/admin/user-login-history'(userId=${user.id})}" target="_blank">Xem lịch sử IP</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 </body>
-<script th:src="@{/burst.js}" src="/burst.js"></script>
 </html> 

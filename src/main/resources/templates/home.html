@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ - Tiệm Tạp Hóa KeyT</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+    <link rel="stylesheet" th:href="@{/modern-styles.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="page-background">
+        
+        <!-- Navigation Header -->
+        <nav class="main-nav animate-slide-in">
+            <div class="container flex items-center justify-between" style="padding: var(--space-4) var(--space-4);">
+                <div class="nav-brand">
+                    <i class="fas fa-sparkles" style="color: var(--primary-500); font-size: var(--text-lg); margin-right: var(--space-2);"></i>
+                    <span class="heading-5" style="color: var(--neutral-800);">Tiệm Tạp Hóa KeyT</span>
+                </div>
+                
+                <div class="nav-menu" id="navMenu">
+                    <a href="#services" class="nav-link">
+                        <i class="fas fa-th-large"></i>
+                        Dịch vụ
+                    </a>
+                    <a th:href="@{/get-otp}" class="nav-link">
+                        <i class="fas fa-key"></i>
+                        Lấy OTP
+                    </a>
+                    <a href="#contact" class="nav-link">
+                        <i class="fas fa-phone"></i>
+                        Liên hệ
+                    </a>
+                    <div class="nav-divider"></div>
+                    <a th:href="@{/logout}" class="nav-link logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Đăng xuất
+                    </a>
+                </div>
+
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content animate-fade-in">
+                    <div class="hero-badge mb-4">
+                        <i class="fas fa-crown"></i>
+                        <span>Premium Services</span>
+                    </div>
+                    <h1 class="hero-title mb-4">
+                        Chào mừng đến với<br>
+                        <span class="gradient-text">Tiệm Tạp Hóa KeyT</span>
+                    </h1>
+                    <p class="hero-description mb-8">
+                        Khám phá các dịch vụ premium với giá tốt nhất. Netflix, Canva Pro, Spotify và nhiều hơn nữa!
+                    </p>
+                    <div class="hero-actions">
+                        <a th:href="@{/get-otp}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-key"></i>
+                            Lấy OTP ngay
+                        </a>
+                        <a href="#services" class="btn btn-outline btn-lg">
+                            <i class="fas fa-eye"></i>
+                            Xem dịch vụ
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual animate-scale-in" style="animation-delay: 0.3s;">
+                    <div class="floating-cards">
+                        <div class="floating-card netflix">
+                            <i class="fab fa-netflix"></i>
+                            <span>Netflix</span>
+                        </div>
+                        <div class="floating-card spotify">
+                            <i class="fab fa-spotify"></i>
+                            <span>Spotify</span>
+                        </div>
+                        <div class="floating-card canva">
+                            <i class="fas fa-palette"></i>
+                            <span>Canva</span>
+                        </div>
+                        <div class="floating-card google">
+                            <i class="fab fa-google-drive"></i>
+                            <span>Drive</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Stats -->
+        <section class="stats-section animate-slide-in" style="animation-delay: 0.5s;">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Khách hàng tin tưởng</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-number">4.9/5</div>
+                        <div class="stat-label">Đánh giá dịch vụ</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Hỗ trợ khách hàng</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Bảo mật tuyệt đối</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services-section">
+            <div class="container">
+                <div class="section-header text-center mb-12 animate-fade-in">
+                    <h2 class="heading-2 mb-4" style="color: var(--neutral-800);">Dịch vụ nổi bật</h2>
+                    <p class="body-large" style="color: var(--neutral-600); max-width: 600px; margin: 0 auto;">
+                        Những dịch vụ premium được yêu thích nhất với giá cả phải chăng
+                    </p>
+                </div>
+
+                <div class="services-grid animate-slide-in" style="animation-delay: 0.2s;">
+                    
+                    <!-- Netflix Premium -->
+                    <div class="service-card featured" onclick="contactService('Netflix Premium')">
+                        <div class="service-badge">Hot</div>
+                        <div class="service-icon netflix">
+                            <i class="fab fa-netflix"></i>
+                        </div>
+                        <h3 class="service-title">Netflix Premium</h3>
+                        <div class="service-price">
+                            <span class="price-main">89K</span>
+                            <span class="price-period">/tháng</span>
+                        </div>
+                        <div class="service-features">
+                            <div class="feature"><i class="fas fa-check"></i> Ultra HD 4K</div>
+                            <div class="feature"><i class="fas fa-check"></i> 4 thiết bị cùng lúc</div>
+                            <div class="feature"><i class="fas fa-check"></i> Không quảng cáo</div>
+                        </div>
+                        <button class="service-btn">
+                            <i class="fab fa-rocketchat"></i>
+                            Liên hệ ngay
+                        </button>
+                    </div>
+
+                    <!-- Canva Pro -->
+                    <div class="service-card" onclick="contactService('Canva Pro')">
+                        <div class="service-icon canva">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="service-title">Canva Pro</h3>
+                        <div class="service-price">
+                            <span class="price-main">189K</span>
+                            <span class="price-period">/năm</span>
+                            <span class="price-gift">🎁</span>
+                        </div>
+                        <div class="service-features">
+                            <div class="feature"><i class="fas fa-check"></i> 100GB lưu trữ</div>
+                            <div class="feature"><i class="fas fa-check"></i> Template premium</div>
+                            <div class="feature"><i class="fas fa-check"></i> Xóa nền AI</div>
+                        </div>
+                        <button class="service-btn">
+                            <i class="fab fa-rocketchat"></i>
+                            Liên hệ ngay
+                        </button>
+                    </div>
+
+                    <!-- Spotify Premium -->
+                    <div class="service-card" onclick="contactService('Spotify Premium')">
+                        <div class="service-icon spotify">
+                            <i class="fab fa-spotify"></i>
+                        </div>
+                        <h3 class="service-title">Spotify Premium</h3>
+                        <div class="service-price">
+                            <span class="price-main">365K</span>
+                            <span class="price-period">/năm</span>
+                        </div>
+                        <div class="service-features">
+                            <div class="feature"><i class="fas fa-check"></i> Chất lượng cao</div>
+                            <div class="feature"><i class="fas fa-check"></i> Tải về offline</div>
+                            <div class="feature"><i class="fas fa-check"></i> Không quảng cáo</div>
+                        </div>
+                        <button class="service-btn">
+                            <i class="fab fa-rocketchat"></i>
+                            Liên hệ ngay
+                        </button>
+                    </div>
+
+                    <!-- Google Drive -->
+                    <div class="service-card" onclick="contactService('Google Drive 2TB')">
+                        <div class="service-icon google">
+                            <i class="fab fa-google-drive"></i>
+                        </div>
+                        <h3 class="service-title">Google Drive 2TB</h3>
+                        <div class="service-price">
+                            <span class="price-main">299K</span>
+                            <span class="price-period">/năm</span>
+                        </div>
+                        <div class="service-features">
+                            <div class="feature"><i class="fas fa-check"></i> 2TB dung lượng</div>
+                            <div class="feature"><i class="fas fa-check"></i> Đồng bộ tự động</div>
+                            <div class="feature"><i class="fas fa-check"></i> Bảo mật cao</div>
+                        </div>
+                        <button class="service-btn">
+                            <i class="fab fa-rocketchat"></i>
+                            Liên hệ ngay
+                        </button>
+                    </div>
+
+                    <!-- Capcut Pro -->
+                    <div class="service-card" onclick="contactService('Capcut Pro')">
+                        <div class="service-icon capcut">
+                            <i class="fas fa-cut"></i>
+                        </div>
+                        <h3 class="service-title">Capcut Pro</h3>
+                        <div class="service-price">
+                            <span class="price-main">750K</span>
+                            <span class="price-period">/năm</span>
+                        </div>
+                        <div class="service-features">
+                            <div class="feature"><i class="fas fa-check"></i> Hiệu ứng premium</div>
+                            <div class="feature"><i class="fas fa-check"></i> Không watermark</div>
+                            <div class="feature"><i class="fas fa-check"></i> AI tự động</div>
+                        </div>
+                        <button class="service-btn">
+                            <i class="fab fa-rocketchat"></i>
+                            Liên hệ ngay
+                        </button>
+                    </div>
+
+                    <!-- Vieon VIP -->
+                    <div class="service-card" onclick="contactService('Vieon VIP')">
+                        <div class="service-icon vieon">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                        <h3 class="service-title">Vieon VIP</h3>
+                        <div class="service-price">
+                            <span class="price-main">49K</span>
+                            <span class="price-period">/tháng</span>
+                        </div>
+                        <div class="service-features">
+                            <div class="feature"><i class="fas fa-check"></i> Phim độc quyền</div>
+                            <div class="feature"><i class="fas fa-check"></i> Không quảng cáo</div>
+                            <div class="feature"><i class="fas fa-check"></i> Xem offline</div>
+                        </div>
+                        <button class="service-btn">
+                            <i class="fab fa-rocketchat"></i>
+                            Liên hệ ngay
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works-section">
+            <div class="container">
+                <div class="section-header text-center mb-12 animate-fade-in">
+                    <h2 class="heading-2 mb-4" style="color: var(--neutral-800);">Cách thức hoạt động</h2>
+                    <p class="body-large" style="color: var(--neutral-600);">
+                        Đơn giản, nhanh chóng và an toàn
+                    </p>
+                </div>
+
+                <div class="steps-grid animate-slide-in" style="animation-delay: 0.2s;">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3 class="step-title">Đăng ký tài khoản</h3>
+                        <p class="step-description">
+                            Tạo tài khoản miễn phí chỉ với email của bạn
+                        </p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3 class="step-title">Chọn dịch vụ</h3>
+                        <p class="step-description">
+                            Lựa chọn dịch vụ phù hợp với nhu cầu của bạn
+                        </p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <i class="fab fa-rocketchat"></i>
+                        </div>
+                        <h3 class="step-title">Liên hệ Zalo</h3>
+                        <p class="step-description">
+                            Chat trực tiếp để được tư vấn và thanh toán
+                        </p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3 class="step-title">Nhận OTP</h3>
+                        <p class="step-description">
+                            Sử dụng hệ thống lấy OTP khi cần thiết
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <div class="contact-card animate-scale-in">
+                    <div class="contact-content">
+                        <div class="contact-icon mb-4">
+                            <i class="fab fa-facebook-messenger"></i>
+                        </div>
+                        <h2 class="heading-3 mb-3" style="color: var(--neutral-800);">Cần hỗ trợ?</h2>
+                        <p class="body mb-6" style="color: var(--neutral-600);">
+                            Đội ngũ hỗ trợ 24/7 sẵn sàng giải đáp mọi thắc mắc của bạn
+                        </p>
+                        <div class="contact-methods">
+                            <a href="https://zalo.me/0868899104" target="_blank" class="contact-method zalo">
+                                <div class="method-icon">
+                                    <i class="fab fa-facebook-messenger"></i>
+                                </div>
+                                <div class="method-info">
+                                    <div class="method-title">Chat Zalo</div>
+                                    <div class="method-subtitle">0868899104</div>
+                                </div>
+                                <i class="fas fa-external-link-alt method-arrow"></i>
+                            </a>
+                            <div class="contact-method email">
+                                <div class="method-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="method-info">
+                                    <div class="method-title">Email</div>
+                                    <div class="method-subtitle">support@keyt.com</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <div class="brand-logo-footer">
+                            <i class="fas fa-sparkles"></i>
+                            <span>Tiệm Tạp Hóa KeyT</span>
+                        </div>
+                        <p class="footer-description">
+                            Cung cấp các dịch vụ premium chất lượng cao với giá tốt nhất thị trường
+                        </p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-column">
+                            <h4 class="footer-title">Dịch vụ</h4>
+                            <ul class="footer-list">
+                                <li><a href="#services">Netflix Premium</a></li>
+                                <li><a href="#services">Canva Pro</a></li>
+                                <li><a href="#services">Spotify Premium</a></li>
+                                <li><a href="#services">Google Drive</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4 class="footer-title">Hỗ trợ</h4>
+                            <ul class="footer-list">
+                                <li><a href="https://zalo.me/0868899104" target="_blank">Liên hệ Zalo</a></li>
+                                <li><a th:href="@{/get-otp}">Lấy OTP</a></li>
+                                <li><a th:href="@{/forgot-password}">Quên mật khẩu</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>© 2024 Tiệm Tạp Hóa KeyT. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Contact service function
+        function contactService(serviceName) {
+            const message = encodeURIComponent(`Xin chào! Tôi muốn tìm hiểu về dịch vụ ${serviceName}. Bạn có thể tư vấn giúp tôi không?`);
+            window.open(`https://zalo.me/0868899104?text=${message}`, '_blank');
+        }
+
+        // Smooth scroll for navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add scroll effect to navbar
+            window.addEventListener('scroll', function() {
+                const nav = document.querySelector('.main-nav');
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+
+            // Animate stats numbers
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                        observer.disconnect();
+                    }
+                });
+            }, observerOptions);
+
+            const statsSection = document.querySelector('.stats-section');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+        });
+
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach((stat, index) => {
+                setTimeout(() => {
+                    stat.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        stat.style.transform = 'scale(1)';
+                    }, 200);
+                }, index * 100);
+            });
+        }
+    </script>
+
+    <!-- Custom styles for home page -->
+    <style>
+        .main-nav {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            transition: all var(--transition-normal);
+        }
+
+        .main-nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            font-weight: var(--font-semibold);
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--rounded-lg);
+            text-decoration: none;
+            color: var(--neutral-700);
+            transition: all var(--transition-fast);
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+        }
+
+        .nav-link:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-700);
+            transform: translateY(-1px);
+        }
+
+        .nav-link.logout {
+            color: var(--error-600);
+        }
+
+        .nav-link.logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-700);
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--neutral-300);
+            margin: 0 var(--space-2);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--neutral-700);
+            font-size: var(--text-lg);
+            cursor: pointer;
+            padding: var(--space-2);
+            border-radius: var(--rounded-lg);
+        }
+
+        .hero-section {
+            padding: calc(var(--space-20) + 60px) var(--space-4) var(--space-20);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-section .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-12);
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            background: var(--gradient-primary);
+            color: white;
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--rounded-full);
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            animation: float-badge 3s ease-in-out infinite;
+        }
+
+        @keyframes float-badge {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: var(--font-bold);
+            line-height: 1.1;
+            color: var(--neutral-800);
+        }
+
+        .gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: var(--text-xl);
+            color: var(--neutral-600);
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 400px;
+        }
+
+        .floating-cards {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .floating-card {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-glass);
+            backdrop-filter: blur(20px);
+            border-radius: var(--rounded-2xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            animation: float-card 4s ease-in-out infinite;
+        }
+
+        .floating-card span {
+            font-size: var(--text-xs);
+            margin-top: var(--space-1);
+        }
+
+        .floating-card.netflix {
+            background: linear-gradient(135deg, #E50914, #B20710);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-card.spotify {
+            background: linear-gradient(135deg, #1ED760, #1DB954);
+            top: 10%;
+            right: 20%;
+            animation-delay: 1s;
+        }
+
+        .floating-card.canva {
+            background: linear-gradient(135deg, #00C4CC, #7B68EE);
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        .floating-card.google {
+            background: linear-gradient(135deg, #4285F4, #34A853);
+            bottom: 20%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+
+        @keyframes float-card {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .stats-section {
+            padding: var(--space-16) var(--space-4);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-8);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-4);
+        }
+
+        .stat-number {
+            font-size: var(--text-3xl);
+            font-weight: var(--font-bold);
+            color: var(--neutral-800);
+            margin-bottom: var(--space-2);
+            transition: transform var(--transition-fast);
+        }
+
+        .stat-label {
+            color: var(--neutral-600);
+            font-weight: var(--font-medium);
+        }
+
+        .services-section {
+            padding: var(--space-20) var(--space-4);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+        }
+
+        .service-card {
+            background: var(--gradient-glass);
+            backdrop-filter: blur(20px);
+            border-radius: var(--rounded-3xl);
+            padding: var(--space-8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all var(--transition-normal);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform var(--transition-normal);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .service-card.featured {
+            border: 2px solid var(--primary-300);
+        }
+
+        .service-badge {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            background: var(--gradient-primary);
+            color: white;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--rounded-full);
+            font-size: var(--text-xs);
+            font-weight: var(--font-semibold);
+        }
+
+        .service-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: var(--space-4);
+            font-size: var(--text-2xl);
+            color: white;
+        }
+
+        .service-icon.netflix { background: linear-gradient(135deg, #E50914, #B20710); }
+        .service-icon.canva { background: linear-gradient(135deg, #00C4CC, #7B68EE); }
+        .service-icon.spotify { background: linear-gradient(135deg, #1ED760, #1DB954); }
+        .service-icon.google { background: linear-gradient(135deg, #4285F4, #34A853); }
+        .service-icon.capcut { background: linear-gradient(135deg, #FF6B6B, #FF8E8E); }
+        .service-icon.vieon { background: linear-gradient(135deg, #FF6B35, #F7931E); }
+
+        .service-title {
+            font-size: var(--text-xl);
+            font-weight: var(--font-semibold);
+            color: var(--neutral-800);
+            margin-bottom: var(--space-3);
+        }
+
+        .service-price {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-1);
+            margin-bottom: var(--space-4);
+        }
+
+        .price-main {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+            color: var(--primary-600);
+        }
+
+        .price-period {
+            color: var(--neutral-500);
+            font-size: var(--text-sm);
+        }
+
+        .price-gift {
+            font-size: var(--text-lg);
+        }
+
+        .service-features {
+            margin-bottom: var(--space-6);
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-2);
+            font-size: var(--text-sm);
+            color: var(--neutral-700);
+        }
+
+        .feature i {
+            color: var(--success-500);
+            font-size: var(--text-xs);
+        }
+
+        .service-btn {
+            width: 100%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--rounded-xl);
+            padding: var(--space-3) var(--space-4);
+            font-weight: var(--font-medium);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+        }
+
+        .service-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .how-it-works-section {
+            padding: var(--space-20) var(--space-4);
+            background: rgba(59, 130, 246, 0.02);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+        }
+
+        .step-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-bold);
+            font-size: var(--text-lg);
+            z-index: 2;
+        }
+
+        .step-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--primary-600);
+            font-size: var(--text-2xl);
+            margin: var(--space-6) 0 var(--space-4);
+        }
+
+        .step-title {
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            color: var(--neutral-800);
+            margin-bottom: var(--space-2);
+        }
+
+        .step-description {
+            color: var(--neutral-600);
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            padding: var(--space-20) var(--space-4);
+        }
+
+        .contact-card {
+            background: var(--gradient-glass);
+            backdrop-filter: blur(20px);
+            border-radius: var(--rounded-3xl);
+            padding: var(--space-12);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .contact-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient-secondary);
+            color: white;
+            font-size: var(--text-3xl);
+        }
+
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-4);
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: var(--rounded-xl);
+            text-decoration: none;
+            transition: all var(--transition-normal);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .contact-method:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            background: white;
+        }
+
+        .contact-method.zalo .method-icon {
+            background: linear-gradient(135deg, #0068FF, #0052CC);
+        }
+
+        .contact-method.email .method-icon {
+            background: linear-gradient(135deg, #EA4335, #FBBC05);
+        }
+
+        .method-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            font-size: var(--text-lg);
+        }
+
+        .method-info {
+            flex: 1;
+        }
+
+        .method-title {
+            font-weight: var(--font-semibold);
+            color: var(--neutral-800);
+            margin-bottom: var(--space-1);
+        }
+
+        .method-subtitle {
+            font-size: var(--text-sm);
+            color: var(--neutral-600);
+        }
+
+        .method-arrow {
+            color: var(--neutral-400);
+            transition: all var(--transition-fast);
+        }
+
+        .contact-method:hover .method-arrow {
+            color: var(--primary-600);
+            transform: translateX(4px);
+        }
+
+        .main-footer {
+            background: linear-gradient(135deg, var(--neutral-800), var(--neutral-900));
+            color: var(--neutral-200);
+            padding: var(--space-16) var(--space-4) var(--space-8);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: var(--space-12);
+            margin-bottom: var(--space-8);
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .brand-logo-footer {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--text-xl);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--space-4);
+            color: white;
+        }
+
+        .footer-description {
+            color: var(--neutral-400);
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-8);
+        }
+
+        .footer-title {
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            color: white;
+            margin-bottom: var(--space-4);
+        }
+
+        .footer-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-list li {
+            margin-bottom: var(--space-2);
+        }
+
+        .footer-list a {
+            color: var(--neutral-400);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .footer-list a:hover {
+            color: var(--primary-400);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--neutral-700);
+            padding-top: var(--space-8);
+            text-align: center;
+            color: var(--neutral-500);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--gradient-glass);
+                backdrop-filter: blur(20px);
+                border-radius: 0 0 var(--rounded-xl) var(--rounded-xl);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                padding: var(--space-4);
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                box-shadow: var(--shadow-xl);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-divider {
+                width: 100%;
+                height: 1px;
+                margin: var(--space-2) 0;
+            }
+
+            .hero-section .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: var(--space-8);
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                height: 300px;
+            }
+
+            .floating-card {
+                width: 80px;
+                height: 80px;
+                font-size: var(--text-base);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: var(--space-8);
+                text-align: center;
+            }
+
+            .footer-brand {
+                max-width: none;
+            }
+        }
+    </style>
+
+    <!-- Floating particles -->
+    <div id="particles" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
+    </div>
+
+    <script>
+        // Add floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 12;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                const colors = [
+                    'rgba(59, 130, 246, 0.3)', 
+                    'rgba(212, 70, 239, 0.3)', 
+                    'rgba(34, 197, 94, 0.3)',
+                    'rgba(236, 72, 153, 0.3)'
+                ];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 8 + 4}px;
+                    height: ${Math.random() * 8 + 4}px;
+                    background: radial-gradient(circle, ${color} 0%, transparent 70%);
+                    border-radius: 50%;
+                    animation: float ${Math.random() * 6 + 4}s ease-in-out infinite;
+                    animation-delay: ${Math.random() * 4}s;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                `;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        const floatStyle = document.createElement('style');
+        floatStyle.textContent = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+                50% { transform: translateY(-30px) rotate(180deg); opacity: 0.3; }
+            }
+        `;
+        document.head.appendChild(floatStyle);
+        
+        setTimeout(createParticles, 1000);
+    </script>
+</body>
+</html> 

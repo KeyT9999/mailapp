@@ -1,167 +1,492 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard - Email Reader</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📧</text></svg>">
-    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Dashboard - Tiệm Tạp Hóa KeyT</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+    <link rel="stylesheet" th:href="@{/modern-styles.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="page-background">
+        
+        <!-- Navigation Header -->
+        <nav class="animate-slide-in" style="backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.2); position: sticky; top: 0; z-index: 50;">
+            <div class="container flex items-center justify-between" style="padding: var(--space-4) var(--space-4);">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-sparkles" style="color: var(--primary-500); font-size: var(--text-lg);"></i>
+                    <span class="heading-5" style="color: var(--neutral-800);">Tiệm Tạp Hóa KeyT</span>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <a th:href="@{/get-otp}" class="btn btn-primary">
+                        <i class="fas fa-key"></i>
+                        Lấy OTP
+                    </a>
+                    <a th:href="@{/logout}" class="btn btn-outline">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Đăng xuất
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container" style="padding: var(--space-8) var(--space-4);">
+            
+            <!-- Welcome Section -->
+            <div class="text-center mb-12 animate-fade-in">
+                <h1 class="heading-2 mb-4" style="color: var(--neutral-800);">Chào mừng bạn đến với Dashboard</h1>
+                <p class="body-large" style="color: var(--neutral-600); max-width: 600px; margin: 0 auto;">
+                    Khám phá các dịch vụ premium với giá tốt nhất. Liên hệ ngay để được hỗ trợ tư vấn!
+                </p>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="animate-slide-in" style="animation-delay: 0.2s; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-6); margin-bottom: var(--space-12);">
+                
+                <!-- Netflix Premium -->
+                <div class="service-card" onclick="contactService('Netflix Premium')">
+                    <div class="service-icon netflix">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3 class="heading-4 mb-2">Netflix Premium</h3>
+                    <div class="service-price mb-3">89K / tháng</div>
+                    <p class="body mb-4" style="color: var(--neutral-600);">
+                        Xem phim với chất lượng cao nhất. Mua 3 tháng chỉ còn 79K/tháng!
+                    </p>
+                    <div class="service-features mb-4">
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Ultra HD 4K</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Xem trên 4 thiết bị</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Không quảng cáo</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full">
+                        <i class="fab fa-rocketchat"></i>
+                        Liên hệ ngay
+                    </button>
+                </div>
+
+                <!-- Canva Pro -->
+                <div class="service-card" onclick="contactService('Canva Pro')">
+                    <div class="service-icon canva">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="heading-4 mb-2">Canva Pro</h3>
+                    <div class="service-price mb-3">189K / năm 🎁</div>
+                    <p class="body mb-4" style="color: var(--neutral-600);">
+                        Nâng cấp lên Canva Thương hiệu, upload font chữ riêng và nhiều tính năng pro khác.
+                    </p>
+                    <div class="service-features mb-4">
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>100GB lưu trữ</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Kho template premium</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Xóa nền tự động</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full">
+                        <i class="fab fa-rocketchat"></i>
+                        Liên hệ ngay
+                    </button>
+                </div>
+
+                <!-- Capcut Pro -->
+                <div class="service-card" onclick="contactService('Capcut Pro')">
+                    <div class="service-icon capcut">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3 class="heading-4 mb-2">Capcut Pro</h3>
+                    <div class="service-price mb-3">750K / năm</div>
+                    <p class="body mb-4" style="color: var(--neutral-600);">
+                        Chỉnh sửa video chuyên nghiệp với hiệu ứng cao cấp. Nâng cấp chính chủ!
+                    </p>
+                    <div class="service-features mb-4">
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Hiệu ứng premium</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Export không watermark</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>AI tự động</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full">
+                        <i class="fab fa-rocketchat"></i>
+                        Liên hệ ngay
+                    </button>
+                </div>
+
+                <!-- Vieon VIP -->
+                <div class="service-card" onclick="contactService('Vieon VIP')">
+                    <div class="service-icon vieon">
+                        <i class="fas fa-tv"></i>
+                    </div>
+                    <h3 class="heading-4 mb-2">Vieon VIP</h3>
+                    <div class="service-price mb-3">49K / tháng</div>
+                    <p class="body mb-4" style="color: var(--neutral-600);">
+                        Xem phim Việt Nam và quốc tế không giới hạn với chất lượng HD.
+                    </p>
+                    <div class="service-features mb-4">
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Phim Việt độc quyền</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Không quảng cáo</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Xem offline</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full">
+                        <i class="fab fa-rocketchat"></i>
+                        Liên hệ ngay
+                    </button>
+                </div>
+
+                <!-- Google Drive -->
+                <div class="service-card" onclick="contactService('Google Drive 2TB')">
+                    <div class="service-icon google">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3 class="heading-4 mb-2">Google Drive 2TB</h3>
+                    <div class="service-price mb-3">299K / năm</div>
+                    <p class="body mb-4" style="color: var(--neutral-600);">
+                        Lưu trữ đám mây an toàn với 2TB dung lượng, đồng bộ mọi thiết bị.
+                    </p>
+                    <div class="service-features mb-4">
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>2TB dung lượng</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Đồng bộ tự động</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Bảo mật cao</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full">
+                        <i class="fab fa-rocketchat"></i>
+                        Liên hệ ngay
+                    </button>
+                </div>
+
+                <!-- Spotify Premium -->
+                <div class="service-card" onclick="contactService('Spotify Premium')">
+                    <div class="service-icon spotify">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3 class="heading-4 mb-2">Spotify Premium</h3>
+                    <div class="service-price mb-3">365K / năm</div>
+                    <p class="body mb-4" style="color: var(--neutral-600);">
+                        Nghe nhạc không quảng cáo với chất lượng cao, tải về offline.
+                    </p>
+                    <div class="service-features mb-4">
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Chất lượng cao</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Tải về offline</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Không quảng cáo</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full">
+                        <i class="fab fa-rocketchat"></i>
+                        Liên hệ ngay
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Guide Section -->
+            <div class="animate-slide-in" style="animation-delay: 0.4s;">
+                <div class="card" style="max-width: 800px; margin: 0 auto;">
+                    <div class="text-center mb-6">
+                        <div style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-primary); margin-bottom: var(--space-4);">
+                            <i class="fas fa-info-circle" style="color: white; font-size: var(--text-xl);"></i>
+                        </div>
+                        <h2 class="heading-3 mb-2" style="color: var(--neutral-800);">Hướng dẫn sử dụng</h2>
+                    </div>
+                    
+                    <div class="guide-steps">
+                        <div class="guide-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4 class="heading-5 mb-2">Đăng nhập hệ thống</h4>
+                                <p class="body" style="color: var(--neutral-600);">Đăng ký và đăng nhập bằng email cá nhân của bạn</p>
+                            </div>
+                        </div>
+                        
+                        <div class="guide-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4 class="heading-5 mb-2">Lấy mã OTP</h4>
+                                <p class="body" style="color: var(--neutral-600);">Nhập email ChatGPT được cấp để lấy mã OTP siêu tốc</p>
+                            </div>
+                        </div>
+                        
+                        <div class="guide-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4 class="heading-5 mb-2">Liên hệ dịch vụ</h4>
+                                <p class="body" style="color: var(--neutral-600);">Chọn dịch vụ phù hợp và liên hệ Zalo để được hỗ trợ tư vấn</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-8">
+                        <div class="alert alert-warning" style="display: inline-block; text-align: left;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Lưu ý quan trọng:</strong><br>
+                                Chỉ nên đăng nhập trên 1-2 thiết bị để bảo vệ tài khoản và đảm bảo trải nghiệm tốt nhất cho mọi người.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center" style="padding: var(--space-8) var(--space-4); background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); margin-top: var(--space-16);">
+            <div class="container">
+                <div class="mb-6">
+                    <a href="https://zalo.me/0868899104" target="_blank" class="btn btn-secondary btn-lg">
+                        <i class="fab fa-facebook-messenger"></i>
+                        Liên hệ Zalo: 0868899104
+                    </a>
+                </div>
+                <p class="body-small" style="color: var(--neutral-500);">
+                    © 2024 Tiệm Tạp Hóa KeyT. All rights reserved.
+                </p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Contact service function
+        function contactService(serviceName) {
+            const message = encodeURIComponent(`Xin chào! Tôi muốn tìm hiểu về dịch vụ ${serviceName}. Bạn có thể tư vấn giúp tôi không?`);
+            window.open(`https://zalo.me/0868899104?text=${message}`, '_blank');
+        }
+
+        // Add interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Service card hover effects
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Smooth scroll for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+
+    <!-- Add custom styles for service cards -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f5f5f5;
-            min-height: 100vh;
-        }
-
-        .navbar {
-            background-color: #1a1a1a;
-            padding: 1rem 2rem;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar h1 {
-            font-size: 1.25rem;
-            font-weight: 500;
-        }
-
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-info {
-            font-size: 0.875rem;
-        }
-
-        .logout-btn {
-            padding: 0.5rem 1rem;
-            background-color: #dc2626;
-            color: white;
-            border: none;
-            border-radius: 4px;
+        .service-card {
+            background: var(--gradient-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--rounded-3xl);
+            padding: var(--space-8);
+            transition: all var(--transition-normal);
             cursor: pointer;
-            font-size: 0.875rem;
-            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
         }
 
-        .card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
+        .service-icon {
+            display: inline-flex;
             align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-
-        .action-btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background-color: #3182ce;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: var(--space-4);
+            font-size: var(--text-2xl);
             color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 500;
-            transition: background-color 0.2s;
-            margin-left: 0.5rem;
         }
 
-        .action-btn:hover {
-            background-color: #2c5282;
+        .service-icon.netflix { background: linear-gradient(135deg, #E50914, #B20710); }
+        .service-icon.canva { background: linear-gradient(135deg, #00C4CC, #7B68EE); }
+        .service-icon.capcut { background: linear-gradient(135deg, #FF6B6B, #FF8E8E); }
+        .service-icon.vieon { background: linear-gradient(135deg, #FF6B35, #F7931E); }
+        .service-icon.google { background: linear-gradient(135deg, #4285F4, #34A853); }
+        .service-icon.spotify { background: linear-gradient(135deg, #1ED760, #1DB954); }
+
+        .service-price {
+            font-size: var(--text-xl);
+            font-weight: var(--font-bold);
+            color: var(--primary-600);
         }
 
-        .action-btn.secondary {
-            background-color: #6b7280;
+        .service-features {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
         }
 
-        .action-btn.secondary:hover {
-            background-color: #4b5563;
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--text-sm);
+            color: var(--neutral-600);
         }
 
-        .welcome-message {
-            text-align: center;
-            color: #6b7280;
-            font-size: 1.1rem;
-            margin: 2rem 0;
+        .feature-item i {
+            color: var(--success-500);
+            font-size: var(--text-xs);
+        }
+
+        .guide-steps {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
+
+        .guide-step {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-4);
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: var(--font-bold);
+            font-size: var(--text-lg);
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
         }
 
         @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem;
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
+            .service-card {
+                padding: var(--space-6);
             }
-
-            .navbar-right {
-                flex-direction: column;
-                gap: 0.5rem;
+            
+            nav .flex {
+                flex-wrap: wrap;
+                gap: var(--space-2);
             }
-
-            .container {
-                padding: 1rem;
-            }
-
-            .card-header {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
+            
+            nav .btn {
+                padding: var(--space-2) var(--space-3);
+                font-size: var(--text-sm);
             }
         }
     </style>
-</head>
-<body>
-    <nav class="navbar">
-        <h1>Email Reader User</h1>
-        <div class="navbar-right">
-            <span class="user-info">Welcome, <span th:text="${user?.username ?: user?.email}">User</span></span>
-            <a th:href="@{/logout}" class="logout-btn">Logout</a>
-        </div>
-    </nav>
 
-    <div class="container">
-        <div class="welcome-message">
-            <p>Chào mừng bạn đến với Email Reader!</p>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Quick Actions</h2>
-            </div>
-            <div style="text-align: center;">
-                <a th:href="@{/get-otp}" class="action-btn">Lấy mã OTP</a>
-                <a th:href="@{/check-email}" class="action-btn secondary">Kiểm tra Email</a>
-            </div>
-        </div>
+    <!-- Floating particles -->
+    <div id="particles" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
+        <!-- Particles will be added via JavaScript -->
     </div>
+
+    <script>
+        // Add floating particles for dreamy effect
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 8;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                const colors = ['rgba(56, 189, 248, 0.4)', 'rgba(212, 70, 239, 0.4)', 'rgba(236, 72, 153, 0.4)'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 8 + 4}px;
+                    height: ${Math.random() * 8 + 4}px;
+                    background: radial-gradient(circle, ${color} 0%, transparent 70%);
+                    border-radius: 50%;
+                    animation: float ${Math.random() * 6 + 4}s ease-in-out infinite;
+                    animation-delay: ${Math.random() * 4}s;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                `;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Float animation
+        const floatStyle = document.createElement('style');
+        floatStyle.textContent = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+                50% { transform: translateY(-30px) rotate(180deg); opacity: 0.2; }
+            }
+        `;
+        document.head.appendChild(floatStyle);
+        
+        // Initialize particles
+        setTimeout(createParticles, 2000);
+    </script>
 </body>
-<script th:src="@{/burst.js}" src="/burst.js"></script>
 </html> 
