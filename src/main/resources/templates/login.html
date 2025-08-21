@@ -9,43 +9,49 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="page-background">
+    <div class="page-background" id="pageBackground">
+        
+        <!-- Dark Mode Toggle -->
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeToggle">
+            <i class="fas fa-moon" id="darkModeIcon"></i>
+        </button>
+
         <div class="min-h-screen flex items-center justify-center p-4">
             <div class="container-sm w-full">
                 
-                <!-- Brand Logo -->
-                <div class="brand-logo animate-fade-in">
-                    <i class="fas fa-sparkles" style="margin-right: 0.5rem; color: #38bdf8;"></i>
+                                <!-- Brand Logo -->
+                <div class="brand-logo animate-fade-in force-contrast">
+                    <i class="fas fa-sparkles" style="margin-right: 0.5rem; color: #60a5fa;"></i>
                     Tiệm Tạp Hóa KeyT
                 </div>
-
+    
                 <!-- Login Card -->
                 <div class="card animate-scale-in" style="animation-delay: 0.2s;">
-                    <div class="text-center mb-8">
-                        <h1 class="heading-2 mb-2" style="color: var(--neutral-800);">Chào mừng trở lại</h1>
-                        <p class="body" style="color: var(--neutral-600);">Đăng nhập để tiếp tục sử dụng dịch vụ</p>
+                                        <div class="text-center mb-8">
+                        <h1 class="heading-2 mb-2 force-contrast">Chào mừng trở lại</h1>
+                        <p class="body force-contrast-medium">Đăng nhập để tiếp tục sử dụng dịch vụ</p>
                     </div>
-
+            
                     <!-- Alerts -->
                     <div th:if="${error}" class="alert alert-error animate-slide-in">
                         <i class="fas fa-exclamation-circle"></i>
                         <span th:text="${error}"></span>
-                    </div>
-
+            </div>
+            
                     <div th:if="${success}" class="alert alert-success animate-slide-in">
                         <i class="fas fa-check-circle"></i>
                         <span th:text="${success}"></span>
-                    </div>
-
+            </div>
+            
                     <!-- Login Form -->
                     <form th:action="@{/login}" method="post" class="animate-slide-in" style="animation-delay: 0.4s;">
                         
-                        <!-- Email Input -->
-                        <div class="input-group">
-                            <label for="email" class="input-label">
-                                <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--primary-500);"></i>
-                                Email
-                            </label>
+                                                 <!-- Email Input -->
+                         <div class="input-group">
+                             <label for="email" class="input-label force-contrast">
+                                 <i class="fas fa-envelope" style="margin-right: 0.5rem; color: #60a5fa;"></i>
+                                 Email
+                             </label>
                             <input type="email" 
                                    id="email" 
                                    name="email" 
@@ -53,14 +59,14 @@
                                    placeholder="Nhập email của bạn"
                                    required 
                                    autocomplete="email">
-                        </div>
-
-                        <!-- Password Input -->
-                        <div class="input-group">
-                            <label for="password" class="input-label">
-                                <i class="fas fa-lock" style="margin-right: 0.5rem; color: var(--primary-500);"></i>
-                                Mật khẩu
-                            </label>
+            </div>
+            
+                                                 <!-- Password Input -->
+                         <div class="input-group">
+                             <label for="password" class="input-label force-contrast">
+                                 <i class="fas fa-lock" style="margin-right: 0.5rem; color: #60a5fa;"></i>
+                                 Mật khẩu
+                             </label>
                             <div style="position: relative;">
                                 <input type="password" 
                                        id="password" 
@@ -72,19 +78,19 @@
                                 <button type="button" class="input-icon" onclick="togglePassword('password')">
                                     <i class="fas fa-eye" id="passwordToggleIcon"></i>
                                 </button>
-                            </div>
-                        </div>
-
-                        <!-- Remember Me & Forgot Password -->
-                        <div class="flex justify-between items-center mb-6">
-                            <label class="flex items-center gap-2 body-small" style="color: var(--neutral-600); cursor: pointer;">
-                                <input type="checkbox" name="remember" style="accent-color: var(--primary-500);">
-                                Ghi nhớ đăng nhập
-                            </label>
-                            <a th:href="@{/forgot-password}" class="body-small" style="color: var(--primary-600); text-decoration: none; transition: color var(--transition-fast);">
-                                Quên mật khẩu?
-                            </a>
-                        </div>
+            </div>
+            </div>
+            
+                                                 <!-- Remember Me & Forgot Password -->
+                         <div class="flex justify-between items-center mb-6">
+                             <label class="flex items-center gap-2 body-small force-contrast-light" style="cursor: pointer;">
+                                 <input type="checkbox" name="remember" style="accent-color: #60a5fa;">
+                                 Ghi nhớ đăng nhập
+                             </label>
+                             <a th:href="@{/forgot-password}" class="body-small force-contrast" style="color: #60a5fa; text-decoration: none; transition: color var(--transition-fast); font-weight: var(--font-medium);">
+                                 Quên mật khẩu?
+                             </a>
+                         </div>
 
                         <!-- Login Button -->
                         <button type="submit" class="btn btn-primary btn-full btn-lg mb-4">
@@ -94,12 +100,12 @@
 
                     </form>
 
-                    <!-- Divider -->
-                    <div class="flex items-center gap-4 mb-6" style="animation-delay: 0.6s;">
-                        <div class="flex-1 h-px" style="background: var(--gradient-neutral);"></div>
-                        <span class="body-small" style="color: var(--neutral-500);">hoặc</span>
-                        <div class="flex-1 h-px" style="background: var(--gradient-neutral);"></div>
-                    </div>
+                                         <!-- Divider -->
+                     <div class="flex items-center gap-4 mb-6 animate-slide-in" style="animation-delay: 0.6s;">
+                         <div class="flex-1 h-px" style="background: rgba(255, 255, 255, 0.3);"></div>
+                         <span class="body-small force-contrast-light">hoặc</span>
+                         <div class="flex-1 h-px" style="background: rgba(255, 255, 255, 0.3);"></div>
+                     </div>
 
                     <!-- Google Login Button -->
                     <button type="button" class="btn btn-google btn-full mb-6 animate-slide-in" style="animation-delay: 0.8s;" onclick="loginWithGoogle()">
@@ -112,19 +118,19 @@
                         Đăng nhập với Google
                     </button>
 
-                    <!-- Sign Up Link -->
-                    <div class="text-center animate-slide-in" style="animation-delay: 1s;">
-                        <span class="body" style="color: var(--neutral-600);">Chưa có tài khoản? </span>
-                        <a th:href="@{/register}" class="body" style="color: var(--primary-600); text-decoration: none; font-weight: var(--font-medium); transition: color var(--transition-fast);">
-                            Đăng ký ngay
-                        </a>
-                    </div>
+                                         <!-- Sign Up Link -->
+                     <div class="text-center animate-slide-in" style="animation-delay: 1s;">
+                         <span class="body force-contrast-medium">Chưa có tài khoản? </span>
+                         <a th:href="@{/register}" class="body force-contrast" style="color: #60a5fa; text-decoration: none; font-weight: var(--font-semibold); transition: color var(--transition-fast);">
+                             Đăng ký ngay
+                         </a>
+                     </div>
 
                 </div>
 
                 <!-- Footer -->
                 <div class="text-center mt-8 animate-fade-in" style="animation-delay: 1.2s;">
-                    <p class="body-small" style="color: var(--neutral-500);">
+                    <p class="body-small force-contrast-light">
                         © 2024 Tiệm Tạp Hóa KeyT. All rights reserved.
                     </p>
                 </div>
@@ -134,6 +140,37 @@
     </div>
 
     <script>
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            const body = document.body;
+            const icon = document.getElementById('darkModeIcon');
+            const isDark = body.classList.contains('force-dark-mode');
+            
+            if (isDark) {
+                body.classList.remove('force-dark-mode');
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('darkMode', 'false');
+            } else {
+                body.classList.add('force-dark-mode');
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('darkMode', 'true');
+            }
+        }
+
+        // Check saved preference on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedMode = localStorage.getItem('darkMode');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const icon = document.getElementById('darkModeIcon');
+            
+            if (savedMode === 'true' || (savedMode === null && prefersDark)) {
+                document.body.classList.add('force-dark-mode');
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        });
+
         // Password Toggle
         function togglePassword(inputId) {
             const input = document.getElementById(inputId);
