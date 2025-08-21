@@ -1,93 +1,356 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xác thực 2FA</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📧</text></svg>">
-    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
-    <style>
-        body {
-            background: #fff8f0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            color: #b71c1c;
-            margin: 0;
-            padding: 0;
-        }
-
-        h2 {
-            color: #b71c1c;
-            text-align: center;
-            margin-top: 30px;
-            letter-spacing: 1px;
-        }
-
-        form {
-            background: #fff;
-            border: 2px solid #b71c1c;
-            border-radius: 12px;
-            max-width: 400px;
-            margin: 30px auto;
-            padding: 32px 28px 24px 28px;
-            box-shadow: 0 4px 16px rgba(183,28,28,0.08);
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 18px 0;
-            border: 1.5px solid #b71c1c;
-            border-radius: 6px;
-            background: #fffdfa;
-            font-size: 1em;
-            color: #b71c1c;
-        }
-
-        button {
-            width: 100%;
-            background: linear-gradient(90deg, #ff9800 0%, #b71c1c 100%);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 0;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 2px 8px rgba(183,28,28,0.08);
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: linear-gradient(90deg, #b71c1c 0%, #ff9800 100%);
-        }
-
-        .error {
-            color: #d32f2f !important;
-            font-weight: bold;
-            margin: 10px 0 0 0;
-            text-align: center;
-        }
-
-        .success {
-            color: #b71c1c !important;
-            font-weight: bold;
-            margin: 1em 0;
-            text-align: center;
-            font-size: 1.5em;
-        }
-    </style>
+    <title>Xác thực 2FA - Tiệm Tạp Hóa KeyT</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+    <link rel="stylesheet" th:href="@{/modern-styles.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <h2>Nhập mã 2FA</h2>
-    
-    <form th:action="@{/verify-2fa}" method="post">
-        <input type="text" name="code" placeholder="Nhập mã 2FA" required>
-        <button type="submit">Xác thực</button>
-    </form>
-    
-    <div th:if="${error}" class="error" th:text="${error}"></div>
-    <div th:if="${success}" class="success" th:utext="${success}"></div>
+    <div class="page-background">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="container-sm w-full">
+                
+                <!-- Brand Logo -->
+                <div class="brand-logo animate-fade-in">
+                    <i class="fas fa-sparkles" style="margin-right: 0.5rem; color: #38bdf8;"></i>
+                    Tiệm Tạp Hóa KeyT
+                </div>
+
+                <!-- 2FA Verification Card -->
+                <div class="card animate-scale-in" style="animation-delay: 0.2s;">
+                    
+                    <!-- Header -->
+                    <div class="text-center mb-8">
+                        <div class="twofa-icon-container mb-4">
+                            <div class="twofa-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="security-rings"></div>
+                        </div>
+                        <h1 class="heading-2 mb-2" style="color: var(--neutral-800);">Xác thực 2FA</h1>
+                        <p class="body" style="color: var(--neutral-600);">
+                            Nhập mã xác thực 6 chữ số để tiếp tục
+                        </p>
+                    </div>
+
+                    <!-- Alerts -->
+                    <div th:if="${error}" class="alert alert-error animate-slide-in">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span th:text="${error}"></span>
+                    </div>
+
+                    <div th:if="${success}" class="alert alert-success animate-slide-in">
+                        <i class="fas fa-check-circle"></i>
+                        <span th:utext="${success}"></span>
+                    </div>
+
+                    <!-- 2FA Form -->
+                    <form th:action="@{/verify-2fa}" method="post" class="animate-slide-in" style="animation-delay: 0.4s;" id="verifyForm">
+                        
+                        <!-- OTP Code Input -->
+                        <div class="input-group">
+                            <label for="code" class="input-label text-center">
+                                <i class="fas fa-key" style="margin-right: 0.5rem; color: var(--success-500);"></i>
+                                Mã xác thực 2FA
+                            </label>
+                            <div class="otp-input-container">
+                                <input type="text" 
+                                       id="code" 
+                                       name="code" 
+                                       class="otp-input"
+                                       placeholder="000000"
+                                       maxlength="6"
+                                       pattern="[0-9]{6}"
+                                       required 
+                                       autocomplete="one-time-code">
+                            </div>
+                            <div class="input-help">
+                                <i class="fas fa-info-circle"></i>
+                                Nhập mã 6 chữ số từ ứng dụng xác thực của bạn
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-full btn-lg mb-4" id="submitBtn">
+                            <i class="fas fa-check-circle"></i>
+                            Xác thực
+                        </button>
+
+                    </form>
+
+                    <!-- Help Section -->
+                    <div class="help-section animate-slide-in" style="animation-delay: 0.6s;">
+                        <div class="help-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Mở ứng dụng Google Authenticator hoặc ứng dụng 2FA khác</span>
+                        </div>
+                        <div class="help-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Mã sẽ thay đổi mỗi 30 giây</span>
+                        </div>
+                        <div class="help-item">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Làm mới trang nếu mã đã hết hạn</span>
+                        </div>
+                    </div>
+
+                    <!-- Back Button -->
+                    <div class="text-center mt-6">
+                        <a th:href="@{/check-email}" class="btn btn-outline btn-full">
+                            <i class="fas fa-arrow-left"></i>
+                            Quay lại
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center mt-8 animate-fade-in" style="animation-delay: 1s;">
+                    <p class="body-small" style="color: var(--neutral-500);">
+                        © 2024 Tiệm Tạp Hóa KeyT. All rights reserved.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-format OTP input
+        document.addEventListener('DOMContentLoaded', function() {
+            const otpInput = document.getElementById('code');
+            const form = document.getElementById('verifyForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Auto-focus and format OTP input
+            otpInput.focus();
+            
+            otpInput.addEventListener('input', function(e) {
+                // Only allow numbers
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                // Auto-submit when 6 digits entered
+                if (this.value.length === 6) {
+                    setTimeout(() => {
+                        form.submit();
+                    }, 300);
+                }
+                
+                // Visual feedback
+                if (this.value.length === 6) {
+                    this.style.borderColor = 'var(--success-400)';
+                    this.style.background = 'var(--success-50)';
+                } else if (this.value.length > 0) {
+                    this.style.borderColor = 'var(--primary-400)';
+                    this.style.background = 'var(--primary-50)';
+                } else {
+                    this.style.borderColor = 'var(--neutral-200)';
+                    this.style.background = 'rgba(255, 255, 255, 0.8)';
+                }
+            });
+
+            // Paste handling
+            otpInput.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const pastedData = (e.clipboardData || window.clipboardData).getData('text');
+                const numbers = pastedData.replace(/[^0-9]/g, '').slice(0, 6);
+                this.value = numbers;
+                
+                if (numbers.length === 6) {
+                    setTimeout(() => {
+                        form.submit();
+                    }, 300);
+                }
+            });
+
+            // Form submission with loading state
+            form.addEventListener('submit', function(e) {
+                const originalContent = submitBtn.innerHTML;
+                
+                submitBtn.innerHTML = `
+                    <div class="loading-spinner"></div>
+                    Đang xác thực...
+                `;
+                submitBtn.disabled = true;
+                
+                // Re-enable if form validation fails
+                setTimeout(() => {
+                    if (!form.checkValidity()) {
+                        submitBtn.innerHTML = originalContent;
+                        submitBtn.disabled = false;
+                    }
+                }, 100);
+            });
+        });
+    </script>
+
+    <!-- Custom styles for 2FA page -->
+    <style>
+        .twofa-icon-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .twofa-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient-accent);
+            color: white;
+            font-size: var(--text-3xl);
+            position: relative;
+            z-index: 2;
+        }
+
+        .security-rings {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border: 3px solid var(--accent-300);
+            border-radius: 50%;
+            animation: security-pulse 2s ease-in-out infinite;
+        }
+
+        .security-rings::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid var(--accent-200);
+            border-radius: 50%;
+            animation: security-pulse 2s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes security-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+        }
+
+        .otp-input-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .otp-input {
+            width: 200px;
+            padding: var(--space-4);
+            font-size: var(--text-3xl);
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            letter-spacing: 0.3em;
+            border: 3px solid var(--neutral-200);
+            border-radius: var(--rounded-xl);
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--neutral-800);
+            transition: all var(--transition-normal);
+            font-weight: var(--font-bold);
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: var(--success-400);
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+            background: white;
+        }
+
+        .input-help {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            margin-top: var(--space-3);
+            font-size: var(--text-sm);
+            color: var(--neutral-500);
+        }
+
+        .help-section {
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: var(--rounded-xl);
+            padding: var(--space-6);
+            margin-top: var(--space-6);
+        }
+
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-3);
+            font-size: var(--text-sm);
+            color: var(--neutral-700);
+        }
+
+        .help-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .help-item i {
+            color: var(--primary-500);
+            width: 20px;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: var(--space-2);
+        }
+    </style>
+
+    <!-- Floating particles -->
+    <div id="particles" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
+    </div>
+
+    <script>
+        // Add floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 6;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                const colors = ['rgba(34, 197, 94, 0.4)', 'rgba(59, 130, 246, 0.4)'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 4 + 2}px;
+                    height: ${Math.random() * 4 + 2}px;
+                    background: radial-gradient(circle, ${color} 0%, transparent 70%);
+                    border-radius: 50%;
+                    animation: float ${Math.random() * 3 + 2}s ease-in-out infinite;
+                    animation-delay: ${Math.random() * 2}s;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                `;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        const floatStyle = document.createElement('style');
+        floatStyle.textContent = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); opacity: 0.6; }
+                50% { transform: translateY(-10px); opacity: 0.3; }
+            }
+        `;
+        document.head.appendChild(floatStyle);
+        
+        setTimeout(createParticles, 1000);
+    </script>
 </body>
-<script th:src="@{/burst.js}" src="/burst.js"></script>
 </html> 
