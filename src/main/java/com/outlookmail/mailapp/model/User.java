@@ -22,6 +22,12 @@ public class User {
     @Column(name = "username")
     private String username;
     
+    @Column(name = "display_name")
+    private String displayName;
+    
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+    
     @NotBlank
     @Email
     @Column(name = "email", unique = true, nullable = false)
@@ -66,6 +72,22 @@ public class User {
         this.username = username;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
     public String getPasswordHash() {
         return passwordHash;
     }
@@ -100,6 +122,23 @@ public class User {
 
     public boolean isAdmin() {
         return "admin".equals(role);
+    }
+
+    public String getDisplayNameOrUsername() {
+        if (displayName != null && !displayName.trim().isEmpty()) {
+            return displayName;
+        }
+        if (username != null && !username.trim().isEmpty()) {
+            return username;
+        }
+        return email; // Fallback to email
+    }
+
+    public String getDisplayNameOrEmail() {
+        if (displayName != null && !displayName.trim().isEmpty()) {
+            return displayName;
+        }
+        return email;
     }
 
     @Override

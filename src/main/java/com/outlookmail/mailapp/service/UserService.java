@@ -6,9 +6,12 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.outlookmail.mailapp.dto.PasswordChangeRequest;
+import com.outlookmail.mailapp.dto.ProfileUpdateRequest;
 import com.outlookmail.mailapp.model.User;
 import com.outlookmail.mailapp.repository.UserRepository;
 import com.outlookmail.mailapp.util.PasswordUtil;
@@ -77,5 +80,49 @@ public class UserService {
     
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+    
+    // Profile Management Methods
+    public User updateProfile(User user, ProfileUpdateRequest request) {
+        logger.info("Updating profile for user: {}, request: {}", user.getEmail(), request);
+        
+        // Update display name (allow empty to clear)
+        if (request.getDisplayName() != null) {
+            String displayName = request.getDisplayName().trim();
+            user.setDisplayName(displayName.isEmpty() ? null : displayName);
+            logger.debug("Updated display name: {}", user.getDisplayName());
+        }
+        
+        // Update username (allow empty to clear)
+        if (request.getUsername() != null) {
+            String username = request.getUsername().trim();
+            user.setUsername(username.isEmpty() ? null : username);
+            logger.debug("Updated username: {}", user.getUsername());
+        }
+        
+        // Update avatar URL (allow empty to clear)
+        if (request.getAvatarUrl() != null) {
+            String avatarUrl = request.getAvatarUrl().trim();
+            user.setAvatarUrl(avatarUrl.isEmpty() ? null : avatarUrl);
+            logger.debug("Updated avatar URL: {}", user.getAvatarUrl());
+        }
+        
+        User savedUser = userRepository.save(user);
+        logger.info("Profile updated successfully for user: {}", user.getEmail());
+        return savedUser;
+    }
+    
+    public boolean changePassword(User user, PasswordChangeRequest request, PasswordEncoder passwordEncoder) {
+        // Verify current password
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
+            return false;
+        }
+        
+        // Update password
+        String newPasswordHash = passwordEncoder.encode(request.getNewPassword());
+        user.setPasswordHash(newPasswordHash);
+        userRepository.save(user);
+        
+        return true;
     }
 } 

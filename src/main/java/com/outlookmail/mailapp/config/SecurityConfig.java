@@ -16,9 +16,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authz -> authz
-                .anyRequest().permitAll() // Allow all requests for now
+                .anyRequest().permitAll() // Allow all requests - authentication handled manually in controllers
             )
-            .csrf(csrf -> csrf.disable()); // Disable CSRF for simplicity
+            .csrf(csrf -> csrf
+                .ignoringRequestMatchers("/get-otp", "/check-email", "/verify-2fa", "/account/**") // Keep existing functionality
+            ); // Keep CSRF disabled for manual session handling
         
         return http.build();
     }

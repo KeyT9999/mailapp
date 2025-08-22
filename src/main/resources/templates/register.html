@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký - Tiệm Tạp Hóa KeyT</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
-    <link rel="stylesheet" th:href="@{/modern-styles.css}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
+<head th:replace="fragments/layout :: head('Đăng ký')"></head>
+<body class="app-layout">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
     <div class="page-background">
         <div class="min-h-screen flex items-center justify-center p-4">
             <div class="container-sm w-full">
                 
                 <!-- Brand Logo -->
-                <div class="brand-logo animate-fade-in">
-                    <i class="fas fa-sparkles" style="margin-right: 0.5rem; color: #38bdf8;"></i>
+                <div class="brand-logo animate-fade-in force-contrast">
+                    <i class="fas fa-sparkles" style="margin-right: 0.5rem; color: #60a5fa;"></i>
                     Tiệm Tạp Hóa KeyT
                 </div>
 
                 <!-- Register Card -->
                 <div class="card animate-scale-in" style="animation-delay: 0.2s;">
                     <div class="text-center mb-8">
-                        <h1 class="heading-2 mb-2" style="color: var(--neutral-800);">Tạo tài khoản mới</h1>
-                        <p class="body" style="color: var(--neutral-600);">Bắt đầu hành trình cùng chúng tôi</p>
+                        <h1 class="heading-2 mb-2 force-contrast">Tạo tài khoản mới</h1>
+                        <p class="body force-contrast-medium">Bắt đầu hành trình cùng chúng tôi</p>
                     </div>
 
                     <!-- Alerts -->
@@ -160,6 +155,12 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!-- Common Scripts -->
+    <div th:replace="fragments/layout :: commonScripts"></div>
+
     <script>
         // Password Toggle
         function togglePassword(inputId) {
@@ -235,8 +236,8 @@
         const style = document.createElement('style');
         style.textContent = `
             @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
             }
             .input-feedback {
                 font-size: var(--text-sm);
@@ -369,8 +370,8 @@
     <!-- Add some interactive particles (optional) -->
     <div id="particles" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
         <!-- Particles will be added via JavaScript -->
-    </div>
-
+            </div>
+            
     <script>
         // Add floating particles for dreamy effect
         function createParticles() {
