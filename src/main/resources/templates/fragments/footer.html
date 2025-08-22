@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+
+<!-- Main Footer Fragment -->
+<footer th:fragment="footer" class="relative mt-20">
+    <!-- Footer Background Art -->
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-800 to-transparent opacity-90"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-pink-900/20"></div>
+    
+    <!-- Footer Content -->
+    <div class="relative z-10 glass-dark text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            
+            <!-- Main Footer Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+                
+                <!-- Brand Column -->
+                <div class="lg:col-span-1">
+                    <div class="space-y-4">
+                        <!-- Logo -->
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-2xl glass flex items-center justify-center">
+                                <i class="fas fa-sparkles text-2xl text-gradient"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-heading font-bold text-gradient">KeyT</h3>
+                                <p class="text-sm text-white/70">Tiệm Tạp Hóa</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Description -->
+                        <p class="text-white/80 leading-relaxed max-w-sm">
+                            Cung cấp các dịch vụ premium chất lượng cao với giá tốt nhất thị trường. 
+                            Netflix, Spotify, Canva và nhiều hơn nữa!
+                        </p>
+
+                        <!-- Social Links -->
+                        <div class="flex space-x-3">
+                            <a href="https://zalo.me/0868899104" 
+                               target="_blank"
+                               class="footer-social-link"
+                               aria-label="Zalo">
+                                <i class="fab fa-facebook-messenger"></i>
+                            </a>
+                            <a href="#" 
+                               class="footer-social-link"
+                               aria-label="Facebook">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="#" 
+                               class="footer-social-link"
+                               aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" 
+                               class="footer-social-link"
+                               aria-label="TikTok">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shopping Column -->
+                <div>
+                    <h4 class="footer-heading">Mua sắm</h4>
+                    <ul class="footer-links">
+                        <li><a th:href="@{/}" class="footer-link">Trang chủ</a></li>
+                        <li><a th:href="@{/c/do-gia-dung}" class="footer-link">Đồ gia dụng</a></li>
+                        <li><a th:href="@{/c/do-an-vat}" class="footer-link">Đồ ăn vặt</a></li>
+                        <li><a th:href="@{/c/do-uong}" class="footer-link">Đồ uống</a></li>
+                        <li><a th:href="@{/c/dich-vu}" class="footer-link">Dịch vụ premium</a></li>
+                        <li><a th:href="@{/promo}" class="footer-link">Ưu đãi đặc biệt</a></li>
+                        <li><a th:href="@{/cart}" class="footer-link">Giỏ hàng</a></li>
+                        <li><a th:href="@{/checkout}" class="footer-link">Thanh toán</a></li>
+                    </ul>
+                </div>
+
+                <!-- Account Column -->
+                <div>
+                    <h4 class="footer-heading">Tài khoản</h4>
+                    <ul class="footer-links">
+                        <li th:if="${session.user}">
+                            <a th:href="@{/account}" class="footer-link">Hồ sơ cá nhân</a>
+                        </li>
+                        <li th:if="${session.user}">
+                            <a th:href="@{/account/orders}" class="footer-link">Đơn hàng của tôi</a>
+                        </li>
+                        <li th:if="${session.user}">
+                            <a th:href="@{/account/addresses}" class="footer-link">Địa chỉ giao hàng</a>
+                        </li>
+                        <li th:if="${session.user}">
+                            <a th:href="@{/account/wishlist}" class="footer-link">Danh sách yêu thích</a>
+                        </li>
+                        <li th:if="${session.user}">
+                            <a th:href="@{/account/settings}" class="footer-link">Cài đặt tài khoản</a>
+                        </li>
+                        <li th:if="${session.user}">
+                            <a th:href="@{/get-otp}" class="footer-link">Lấy mã OTP</a>
+                        </li>
+                        
+                        <!-- Guest Links -->
+                        <li th:unless="${session.user}">
+                            <a th:href="@{/login}" class="footer-link">Đăng nhập</a>
+                        </li>
+                        <li th:unless="${session.user}">
+                            <a th:href="@{/register}" class="footer-link">Đăng ký tài khoản</a>
+                        </li>
+                        <li th:unless="${session.user}">
+                            <a th:href="@{/forgot-password}" class="footer-link">Quên mật khẩu</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Support & Policies Column -->
+                <div>
+                    <h4 class="footer-heading">Hỗ trợ & Chính sách</h4>
+                    <ul class="footer-links">
+                        <li><a th:href="@{/pages/shipping-policy}" class="footer-link">Chính sách giao hàng</a></li>
+                        <li><a th:href="@{/pages/return-policy}" class="footer-link">Chính sách đổi trả</a></li>
+                        <li><a th:href="@{/pages/privacy-policy}" class="footer-link">Chính sách bảo mật</a></li>
+                        <li><a th:href="@{/pages/terms-of-service}" class="footer-link">Điều khoản dịch vụ</a></li>
+                        <li><a href="https://zalo.me/0868899104" target="_blank" class="footer-link">
+                            <i class="fab fa-facebook-messenger mr-1"></i>
+                            Chat Zalo: 0868899104
+                        </a></li>
+                        <li><a href="mailto:support@keyt.com" class="footer-link">
+                            <i class="fas fa-envelope mr-1"></i>
+                            Email hỗ trợ
+                        </a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Newsletter Section -->
+            <div class="mt-12 pt-8 border-t border-white/10">
+                <div class="flex flex-col lg:flex-row items-center justify-between space-y-6 lg:space-y-0">
+                    
+                    <!-- Newsletter Signup -->
+                    <div class="flex-1 max-w-md">
+                        <h4 class="text-lg font-semibold mb-3 text-white">
+                            <i class="fas fa-bell mr-2 text-yellow-400"></i>
+                            Nhận thông báo ưu đãi
+                        </h4>
+                        <form action="#" method="get" class="flex space-x-2">
+                            <input type="email" 
+                                   name="email" 
+                                   placeholder="Nhập email của bạn..."
+                                   class="flex-1 px-4 py-2 glass rounded-xl text-slate-800 placeholder-slate-500 border-0 focus:ring-2 focus:ring-blue-400/50"
+                                   aria-label="Email đăng ký nhận tin">
+                            <button type="submit" 
+                                    class="btn-gradient px-6 py-2 rounded-xl font-medium whitespace-nowrap"
+                                    aria-label="Đăng ký">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                        <p class="text-xs text-white/60 mt-2">
+                            Đăng ký để nhận thông báo về ưu đãi mới nhất
+                        </p>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="text-center lg:text-right">
+                        <h4 class="text-sm font-medium text-white/70 mb-3">PHƯƠNG THỨC THANH TOÁN</h4>
+                        <div class="flex items-center justify-center lg:justify-end space-x-3">
+                            <div class="payment-method">
+                                <i class="fab fa-cc-visa text-blue-600"></i>
+                            </div>
+                            <div class="payment-method">
+                                <i class="fab fa-cc-mastercard text-red-600"></i>
+                            </div>
+                            <div class="payment-method">
+                                <i class="fas fa-mobile-alt text-green-600"></i>
+                            </div>
+                            <div class="payment-method">
+                                <i class="fas fa-qrcode text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="mt-8 pt-6 border-t border-white/10 text-center">
+                <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+                    <p class="text-white/70 text-sm">
+                        © <span th:text="${#dates.year(#dates.createNow())}">2024</span> 
+                        <span class="font-semibold text-white">Tiệm Tạp Hóa KeyT</span>. 
+                        All rights reserved.
+                    </p>
+                    
+                    <div class="flex items-center space-x-6 text-sm text-white/60">
+                        <a href="#" class="hover:text-white transition-colors">Điều khoản</a>
+                        <a href="#" class="hover:text-white transition-colors">Bảo mật</a>
+                        <a href="#" class="hover:text-white transition-colors">Cookies</a>
+                        <span>Made with ❤️ in Vietnam</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer Decoration -->
+    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+</footer>
+
+<!-- Footer Styles -->
+<style th:fragment="footerStyles">
+    .footer-heading {
+        @apply text-lg font-heading font-semibold mb-4 text-white;
+    }
+
+    .footer-links {
+        @apply space-y-2;
+    }
+
+    .footer-link {
+        @apply block text-white/80 hover:text-white transition-colors duration-200 text-sm py-1;
+    }
+
+    .footer-social-link {
+        @apply w-10 h-10 glass rounded-xl flex items-center justify-center text-white/80 hover:text-white hover:scale-110 transition-all duration-300;
+    }
+
+    .payment-method {
+        @apply w-10 h-8 glass rounded-lg flex items-center justify-center text-xl;
+    }
+
+    /* Footer responsive adjustments */
+    @media (max-width: 768px) {
+        .footer-heading {
+            @apply text-base mb-3;
+        }
+        
+        .footer-link {
+            @apply text-xs py-0.5;
+        }
+    }
+</style>
+
+</html> 

@@ -1,0 +1,73 @@
+<nav th:fragment="navbar" class="site-header">
+  <div class="site-header-inner">
+    <a th:href="@{/}" class="brand">
+      <span class="brand-icon">✨</span>
+      <span class="brand-text">Tiệm Tạp Hóa KeyT</span>
+    </a>
+
+    <div class="actions" th:if="${session.user}">
+      <a th:href="@{/get-otp}" class="btn btn-ghost">Lấy OTP</a>
+      <a th:href="@{/account/settings}" class="btn btn-primary">Cài đặt</a>
+      <a th:href="@{/logout}" class="btn btn-ghost">Đăng xuất</a>
+    </div>
+    <div class="actions" th:unless="${session.user}">
+      <a th:href="@{/login}" class="btn btn-ghost">Đăng nhập</a>
+      <a th:href="@{/register}" class="btn btn-primary">Đăng ký</a>
+    </div>
+  </div>
+
+  <style>
+    .site-header {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    }
+    .site-header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      gap: 12px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .brand-icon {
+      font-size: 18px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 6px rgba(99, 102, 241, 0.35));
+      animation: twinkle 3.5s ease-in-out infinite;
+    }
+    .brand-text {
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      background-image: var(--grad1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+    }
+    .actions { display: inline-flex; align-items: center; gap: 10px; }
+
+    /* Dark mode */
+    .dark .site-header { background: rgba(2, 6, 23, 0.55); border-color: rgba(100, 116, 139, 0.2); }
+    .dark .brand-text { text-shadow: none; }
+
+    /* Animations */
+    @keyframes twinkle { 0%,100% { transform: translateY(0); opacity: 1;} 50% { transform: translateY(-1px); opacity: 0.85;} }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .site-header-inner { padding: 12px; }
+      .brand-text { font-size: 15px; }
+      .actions .btn { padding: 8px 12px; font-size: 14px; }
+    }
+  </style>
+</nav> 

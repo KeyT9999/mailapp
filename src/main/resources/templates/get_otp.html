@@ -1,38 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lấy OTP - Tiệm Tạp Hóa KeyT</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔑</text></svg>">
-    <link rel="stylesheet" th:href="@{/modern-styles.css}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="page-background">
-        
-        <!-- Navigation Header -->
-        <nav class="animate-slide-in" style="backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.2); position: sticky; top: 0; z-index: 50;">
-            <div class="container flex items-center justify-between" style="padding: var(--space-4) var(--space-4);">
-                <a href="/" class="flex items-center gap-3" style="text-decoration: none;">
-                    <i class="fas fa-sparkles" style="color: var(--primary-500); font-size: var(--text-lg);"></i>
-                    <span class="heading-5" style="color: var(--neutral-800);">Tiệm Tạp Hóa KeyT</span>
-                </a>
-                
-                <div class="flex items-center gap-3">
-                    <a href="/" class="btn btn-ghost">
-                        <i class="fas fa-home"></i>
-                        Trang chủ
-                    </a>
-                    <a th:href="@{/logout}" class="btn btn-outline">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Đăng xuất
-                    </a>
-                </div>
-            </div>
-        </nav>
+<head th:replace="fragments/layout :: head('Lấy OTP')"></head>
+<body class="app-layout">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-        <div class="min-h-screen flex items-center justify-center p-4" style="padding-top: var(--space-8);">
+    <div class="page-background">
+        <div class="min-h-screen flex items-center justify-center p-4">
             <div class="container-sm w-full">
                 
                 <!-- Main Card -->
@@ -167,6 +140,12 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!-- Common Scripts -->
+    <div th:replace="fragments/layout :: commonScripts"></div>
 
     <script>
         let countdownTimer;

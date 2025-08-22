@@ -1,49 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang chủ - Tiệm Tạp Hóa KeyT</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
-    <link rel="stylesheet" th:href="@{/modern-styles.css}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="page-background">
-        
-        <!-- Navigation Header -->
-        <nav class="main-nav animate-slide-in">
-            <div class="container flex items-center justify-between" style="padding: var(--space-4) var(--space-4);">
-                <div class="nav-brand">
-                    <i class="fas fa-sparkles" style="color: var(--primary-500); font-size: var(--text-lg); margin-right: var(--space-2);"></i>
-                    <span class="heading-5" style="color: var(--neutral-800);">Tiệm Tạp Hóa KeyT</span>
-                </div>
-                
-                <div class="nav-menu" id="navMenu">
-                    <a href="#services" class="nav-link">
-                        <i class="fas fa-th-large"></i>
-                        Dịch vụ
-                    </a>
-                    <a th:href="@{/get-otp}" class="nav-link">
-                        <i class="fas fa-key"></i>
-                        Lấy OTP
-                    </a>
-                    <a href="#contact" class="nav-link">
-                        <i class="fas fa-phone"></i>
-                        Liên hệ
-                    </a>
-                    <div class="nav-divider"></div>
-                    <a th:href="@{/logout}" class="nav-link logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Đăng xuất
-                    </a>
-                </div>
+<head th:replace="fragments/layout :: head('Trang chủ')"></head>
+<body class="app-layout">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </nav>
+    <div class="page-background">
 
         <!-- Hero Section -->
         <section class="hero-section">
@@ -370,46 +331,13 @@
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="main-footer">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-brand">
-                        <div class="brand-logo-footer">
-                            <i class="fas fa-sparkles"></i>
-                            <span>Tiệm Tạp Hóa KeyT</span>
-                        </div>
-                        <p class="footer-description">
-                            Cung cấp các dịch vụ premium chất lượng cao với giá tốt nhất thị trường
-                        </p>
-                    </div>
-                    <div class="footer-links">
-                        <div class="footer-column">
-                            <h4 class="footer-title">Dịch vụ</h4>
-                            <ul class="footer-list">
-                                <li><a href="#services">Netflix Premium</a></li>
-                                <li><a href="#services">Canva Pro</a></li>
-                                <li><a href="#services">Spotify Premium</a></li>
-                                <li><a href="#services">Google Drive</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-column">
-                            <h4 class="footer-title">Hỗ trợ</h4>
-                            <ul class="footer-list">
-                                <li><a href="https://zalo.me/0868899104" target="_blank">Liên hệ Zalo</a></li>
-                                <li><a th:href="@{/get-otp}">Lấy OTP</a></li>
-                                <li><a th:href="@{/forgot-password}">Quên mật khẩu</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p>© 2024 Tiệm Tạp Hóa KeyT. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-
     </div>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!-- Common Scripts -->
+    <div th:replace="fragments/layout :: commonScripts"></div>
 
     <script>
         // Mobile menu toggle
