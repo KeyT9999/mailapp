@@ -308,13 +308,14 @@
                 
                 const isValid = emailValid && passwordValid && passwordMatch && terms;
                 
-                registerBtn.disabled = !isValid;
+                // Always allow submit; rely on server-side validation. Only adjust visuals.
+                registerBtn.disabled = false;
                 if (isValid) {
                     registerBtn.style.opacity = '1';
                     registerBtn.style.cursor = 'pointer';
                 } else {
-                    registerBtn.style.opacity = '0.6';
-                    registerBtn.style.cursor = 'not-allowed';
+                    registerBtn.style.opacity = '0.9';
+                    registerBtn.style.cursor = 'pointer';
                 }
             }
 
