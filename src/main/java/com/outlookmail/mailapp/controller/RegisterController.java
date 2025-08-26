@@ -1,10 +1,14 @@
 package com.outlookmail.mailapp.controller;
 
-import com.outlookmail.mailapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.outlookmail.mailapp.service.UserService;
 
 @Controller
 public class RegisterController {
@@ -25,7 +29,8 @@ public class RegisterController {
     public String register(@RequestParam String email,
                           @RequestParam String password,
                           @RequestParam String confirmPassword,
-                          Model model) {
+                          Model model,
+                          RedirectAttributes redirectAttributes) {
         
         if (email == null || password == null || confirmPassword == null ||
             email.trim().isEmpty() || password.trim().isEmpty() || confirmPassword.trim().isEmpty()) {
@@ -40,7 +45,8 @@ public class RegisterController {
         
         try {
             userService.createUser(email, password, "user");
-            model.addAttribute("success", "Đăng ký thành công! Bạn có thể đăng nhập.");
+            redirectAttributes.addFlashAttribute("success", "Đăng ký thành công! Vui lòng đăng nhập để bắt đầu sử dụng. Nếu chưa nhận được email xác minh, hãy kiểm tra hộp thư rác.");
+            return "redirect:/login";
         } catch (RuntimeException e) {
             model.addAttribute("error", "Đăng ký thất bại: " + e.getMessage());
         }
