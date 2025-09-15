@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Danh sách gói dịch vụ')}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="container">
+  <section class="page-header flex between wrap">
+    <div>
+      <h1 class="page-title">Danh sách gói dịch vụ</h1>
+      <p class="muted small">Quản lý người mua, liên hệ và trạng thái nhắc hạn.</p>
+    </div>
+    <div class="actions row gap">
+      <a class="btn" th:href="@{/admin/subscriptions/import}">Nhập nhanh</a>
+      <a class="btn btn-primary" th:href="@{/admin/subscriptions/new}">+ Thêm gói dịch vụ</a>
+      <a class="btn" th:href="@{/admin/dashboard}">← Về Dashboard</a>
+    </div>
+  </section>
+
+  <div th:if="${success}" class="alert alert-success" th:utext="${success}"></div>
+  <div th:if="${error}" class="alert alert-error" th:utext="${error}"></div>
+
+  <!-- Toolbar: tìm kiếm / lọc / tác vụ nhanh -->
+  <section class="toolbar card">
+    <form class="row wrap gap" th:action="@{/admin/subscriptions}" method="get">
+      <div class="input-group">
+        <label class="label">Tìm kiếm</label>
+        <input type="text" name="q" placeholder="Email / IG / Zalo / Dịch vụ…" th:value="${param.q}">
+      </div>
+      <div class="input-group">
+        <label class="label">Trạng thái</label>
+        <select name="status">
+          <option th:selected="${param.status == null}">Tất cả</option>
+          <option value="notified" th:selected="${param.status=='notified'}">Đã nhắc</option>
+          <option value="pending" th:selected="${param.status=='pending'}">Chưa nhắc</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="label">Hết hạn trước</label>
+        <input type="date" name="before" th:value="${param.before}">
+      </div>
+      <div class="grow"></div>
+      <a class="btn" th:href="@{/admin/subscriptions/import}">Nhập nhanh</a>
+      <button class="btn">Lọc</button>
+    </form>
+  </section>
+
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-compact table-hover">
+        <thead class="sticky">
+          <tr>
+            <th class="w-60">Khách hàng</th>
+            <th>Dịch vụ</th>
+            <th>Bắt đầu</th>
+            <th>Kết thúc</th>
+            <th>Trạng thái</th>
+            <th class="text-right w-40">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="s : ${subscriptions}">
+            <td>
+              <div class="stack tight">
+                <div class="row between">
+                  <strong th:text="${s.customerEmail}">email@example.com</strong>
+                  <span class="muted tiny" th:text="'#'+${s.id}">#1</span>
+                </div>
+                <div class="row gap chips">
+                  <a th:if="${s.contactZalo != null and !#strings.isEmpty(s.contactZalo)}" class="chip chip-ghost" th:href="${s.contactZalo}" target="_blank">Zalo</a>
+                  <a th:if="${s.contactInstagram != null and !#strings.isEmpty(s.contactInstagram)}" class="chip chip-ghost" th:href="${s.contactInstagram}" target="_blank">Instagram</a>
+                </div>
+                <div class="muted tiny" th:if="${(s.contactZalo != null and !#strings.isEmpty(s.contactZalo)) or (s.contactInstagram != null and !#strings.isEmpty(s.contactInstagram))}">
+                  <span th:if="${s.contactZalo != null and !#strings.isEmpty(s.contactZalo)}" th:text="${s.contactZalo}"></span>
+                  <span th:if="${(s.contactZalo != null and !#strings.isEmpty(s.contactZalo)) and (s.contactInstagram != null and !#strings.isEmpty(s.contactInstagram))}"> · </span>
+                  <span th:if="${s.contactInstagram != null and !#strings.isEmpty(s.contactInstagram)}" th:text="${s.contactInstagram}"></span>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <div class="row gap">
+                <span class="badge badge-soft" th:text="${s.serviceName}">Canva Pro</span>
+              </div>
+            </td>
+
+            <td>
+              <span th:text="${#temporals.format(s.startDate, 'dd/MM/yyyy')}">16/08/2025</span>
+            </td>
+
+            <td>
+              <div class="stack tight">
+                <span th:text="${#temporals.format(s.endDate, 'dd/MM/yyyy')}">16/09/2025</span>
+                <small class="tiny muted"
+                       th:text="${T(java.time.temporal.ChronoUnit).DAYS.between(T(java.time.LocalDate).now(), s.endDate) >= 0 ? T(java.time.temporal.ChronoUnit).DAYS.between(T(java.time.LocalDate).now(), s.endDate) + ' ngày nữa' : 'Đã hết hạn ' + (-T(java.time.temporal.ChronoUnit).DAYS.between(T(java.time.LocalDate).now(), s.endDate)) + ' ngày'}">
+                  3 ngày nữa
+                </small>
+              </div>
+            </td>
+
+            <td>
+              <span th:classappend="${s.preExpiryNotified} ? 'badge badge-success' : 'badge badge-warning'"
+                    th:text="${s.preExpiryNotified} ? 'ĐÃ NHẮC' : 'CHƯA NHẮC'">
+                CHƯA NHẮC
+              </span>
+            </td>
+
+            <td class="text-right">
+              <div class="row gap end">
+                <form th:action="@{/admin/subscriptions/send-reminder}" method="post" class="inline-form">
+                  <input type="hidden" name="id" th:value="${s.id}">
+                  <button type="submit" class="btn btn-accent btn-sm">Gửi nhắc</button>
+                </form>
+                <details class="inline-form">
+                  <summary class="btn btn-ghost btn-sm">Sửa</summary>
+                  <form th:action="@{/admin/subscriptions/edit}" method="post" class="stack" style="margin-top:8px;">
+                    <input type="hidden" name="id" th:value="${s.id}">
+                    <input type="email" name="customerEmail" th:value="${s.customerEmail}" required>
+                    <input type="text" name="serviceName" th:value="${s.serviceName}" required>
+                    <input type="date" name="startDate" th:value="${#temporals.format(s.startDate,'yyyy-MM-dd')}" required>
+                    <input type="date" name="endDate" th:value="${#temporals.format(s.endDate,'yyyy-MM-dd')}" required>
+                    <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
+                  </form>
+                </details>
+                <form th:action="@{/admin/subscriptions/delete}" method="post" class="inline-form" onsubmit="return confirm('Xóa gói này?');">
+                  <input type="hidden" name="id" th:value="${s.id}">
+                  <button type="submit" class="btn btn-ghost btn-sm">Xóa</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+
+          <tr th:if="${#lists.isEmpty(subscriptions)}">
+            <td colspan="6" class="muted text-center">Chưa có dữ liệu.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- (tuỳ chọn) pagination -->
+  <div class="pagination row gap center" th:if="${pageTotal > 1}">
+    <a class="btn btn-ghost btn-sm" th:href="@{'/admin/subscriptions?page=' + ${page-1}}" th:if="${page>1}">← Trước</a>
+    <span class="tiny muted">Trang <b th:text="${page}">1</b>/<span th:text="${pageTotal}">5</span></span>
+    <a class="btn btn-ghost btn-sm" th:href="@{'/admin/subscriptions?page=' + ${page+1}}" th:if="${page<pageTotal}">Sau →</a>
+  </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:replace="~{fragments/layout :: commonScripts}"></script>
+</body>
+</html>

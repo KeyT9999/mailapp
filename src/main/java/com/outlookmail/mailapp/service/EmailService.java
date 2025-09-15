@@ -1,5 +1,9 @@
 package com.outlookmail.mailapp.service;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import com.outlookmail.mailapp.model.ServiceSubscription;
 
 @Service
 public class EmailService {
@@ -41,8 +47,6 @@ public class EmailService {
             
         } catch (Exception e) {
             logger.error("Failed to send password reset email to: {}", toEmail, e);
-            // In production, you might want to queue the email for retry
-            // or use a fallback email service
         }
     }
     
@@ -141,6 +145,83 @@ public class EmailService {
         } catch (Exception e) {
             logger.error("Email configuration test failed", e);
             return false;
+        }
+    }
+
+    public void sendSubscriptionExpiryReminderToCustomer(String toEmail, String serviceName, LocalDate endDate) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail);
+            message.setReplyTo(replyToEmail);
+            message.setTo(toEmail);
+            // Subject: [Nhắc nhở] Gói “{service}” sẽ hết hạn vào ngày mai ({endDate}).
+            String endStr = endDate.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            message.setSubject("[Nhắc nhở] Gói \"" + serviceName + "\" sẽ hết hạn vào ngày mai (" + endStr + ").");
+            String body = String.format(
+                "💌 Hellooo bạn yêu 💕\n\n" +
+                "Gói %s của bạn sẽ hết hạn vào ngày %s đó ạ 🕒\n\n" +
+                "Nếu muốn tiếp tục sử dụng, bạn cứ liên hệ sốp liền nha:\n" +
+                "📱 Zalo: https://zalo.me/0868899104\n\n" +
+                "📸 Instagram: https://www.instagram.com/taphoakeyt/\n\n" +
+                "💖 Sốp chờ tin nhắn của ní đó ạ 💕",
+                serviceName,
+                endStr
+            );
+            message.setText(body);
+            mailSender.send(message);
+            logger.info("Sent pre-expiry reminder to customer: {} for service {}", toEmail, serviceName);
+        } catch (Exception e) {
+            logger.error("Failed to send pre-expiry reminder to {}", toEmail, e);
+        }
+    }
+
+    public void sendSubscriptionExpiryDigestToAdmin(String adminEmail, List<ServiceSubscription> dueTomorrow) {
+        if (dueTomorrow == null || dueTomorrow.isEmpty()) return;
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail);
+            message.setTo(adminEmail);
+            // Subject: [Dự báo] Danh sách gói hết hạn vào ngày mai.
+            message.setSubject("[Dự báo] Danh sách gói hết hạn vào ngày mai.");
+            String lines = dueTomorrow.stream().map(s ->
+                String.format("- %s | %s | KH: %s (Zalo: %s, IG: %s)",
+                    s.getEndDate().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    s.getServiceName(),
+                    s.getCustomerEmail(),
+                    s.getContactZalo() == null ? "-" : s.getContactZalo(),
+                    s.getContactInstagram() == null ? "-" : s.getContactInstagram())
+            ).collect(Collectors.joining("\n"));
+            String body = "Các dịch vụ hết hạn vào ngày mai:\n\n" + lines + "\n\n— Hệ thống MailApp";
+            message.setText(body);
+            mailSender.send(message);
+            logger.info("Sent admin T-1 digest for {} subscriptions", dueTomorrow.size());
+        } catch (Exception e) {
+            logger.error("Failed to send admin T-1 digest", e);
+        }
+    }
+
+    public void sendSubscriptionExpiryTodayDigestToAdmin(String adminEmail, List<ServiceSubscription> dueToday) {
+        if (dueToday == null || dueToday.isEmpty()) return;
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail);
+            message.setTo(adminEmail);
+            // Subject: [Hết hạn hôm nay] Danh sách gói hết hạn.
+            message.setSubject("[Hết hạn hôm nay] Danh sách gói hết hạn.");
+            String lines = dueToday.stream().map(s ->
+                String.format("- %s | %s | KH: %s (Zalo: %s, IG: %s)",
+                    s.getEndDate().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    s.getServiceName(),
+                    s.getCustomerEmail(),
+                    s.getContactZalo() == null ? "-" : s.getContactZalo(),
+                    s.getContactInstagram() == null ? "-" : s.getContactInstagram())
+            ).collect(Collectors.joining("\n"));
+            String body = "Các dịch vụ hết hạn hôm nay:\n\n" + lines + "\n\n— Hệ thống MailApp";
+            message.setText(body);
+            mailSender.send(message);
+            logger.info("Sent admin T0 digest for {} subscriptions", dueToday.size());
+        } catch (Exception e) {
+            logger.error("Failed to send admin T0 digest", e);
         }
     }
 } 

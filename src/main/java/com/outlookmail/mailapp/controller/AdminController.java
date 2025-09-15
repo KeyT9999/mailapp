@@ -25,6 +25,9 @@ import com.outlookmail.mailapp.util.TOTPUtil;
 import com.outlookmail.mailapp.repository.OtpRequestRepository;
 import com.outlookmail.mailapp.repository.UserLoginHistoryRepository;
 import com.outlookmail.mailapp.model.UserLoginHistory;
+import com.outlookmail.mailapp.model.ServiceSubscription;
+import com.outlookmail.mailapp.service.SubscriptionService;
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/admin")
@@ -34,16 +37,19 @@ public class AdminController {
     private final OtpRequestService otpRequestService;
     private final OtpRequestRepository otpRequestRepository;
     private final UserLoginHistoryRepository userLoginHistoryRepository;
+    private final SubscriptionService subscriptionService;
     
     @Autowired
     public AdminController(ChatGptAccountService chatGptAccountService, 
                          OtpRequestService otpRequestService,
                          OtpRequestRepository otpRequestRepository,
-                         UserLoginHistoryRepository userLoginHistoryRepository) {
+                         UserLoginHistoryRepository userLoginHistoryRepository,
+                         SubscriptionService subscriptionService) {
         this.chatGptAccountService = chatGptAccountService;
         this.otpRequestService = otpRequestService;
         this.otpRequestRepository = otpRequestRepository;
         this.userLoginHistoryRepository = userLoginHistoryRepository;
+        this.subscriptionService = subscriptionService;
     }
     
     @GetMapping("/add-chatgpt-email")
@@ -60,6 +66,115 @@ public class AdminController {
         return "add_chatgpt_email";
     }
     
+    @GetMapping("/subscriptions")
+    public String listSubscriptions(@RequestParam(required = false) String q,
+                                    @RequestParam(required = false) String status,
+                                    @RequestParam(required = false) String before,
+                                    Model model) {
+        List<ServiceSubscription> subs = subscriptionService.search(q, status, before);
+        model.addAttribute("subscriptions", subs);
+        return "admin/subscriptions";
+    }
+
+    @GetMapping("/subscriptions/new")
+    public String newSubscriptionForm() {
+        return "admin/subscription_form";
+    }
+
+    @GetMapping("/subscriptions/import")
+    public String importForm() {
+        return "admin/subscription_import";
+    }
+
+    @PostMapping("/subscriptions/import")
+    public String importSubmit(@RequestParam("data") String data, Model model) {
+        var result = subscriptionService.importFromText(data);
+        model.addAttribute("success", "Nhập thành công: " + result.success + ", thất bại: " + result.failed);
+        if (!result.errors.isEmpty()) {
+            model.addAttribute("error", String.join("<br>", result.errors));
+        }
+        List<ServiceSubscription> subs = subscriptionService.findAll();
+        model.addAttribute("subscriptions", subs);
+        return "admin/subscriptions";
+    }
+
+    @PostMapping("/subscriptions")
+    public String createSubscription(@RequestParam String customerEmail,
+                                     @RequestParam(required = false) String contactZalo,
+                                     @RequestParam(required = false) String contactInstagram,
+                                     @RequestParam String serviceName,
+                                     @RequestParam String startDate,
+                                     @RequestParam String endDate,
+                                     Model model) {
+        try {
+            ServiceSubscription s = new ServiceSubscription();
+            s.setCustomerEmail(customerEmail);
+            s.setContactZalo(contactZalo);
+            s.setContactInstagram(contactInstagram);
+            s.setServiceName(serviceName);
+            s.setStartDate(LocalDate.parse(startDate));
+            s.setEndDate(LocalDate.parse(endDate));
+            subscriptionService.save(s);
+            model.addAttribute("success", "Tạo gói dịch vụ thành công");
+        } catch (Exception e) {
+            model.addAttribute("error", "Tạo gói dịch vụ thất bại: " + e.getMessage());
+            return "admin/subscription_form";
+        }
+        List<ServiceSubscription> subs = subscriptionService.findAll();
+        model.addAttribute("subscriptions", subs);
+        return "admin/subscriptions";
+    }
+
+    @PostMapping("/subscriptions/send-reminder")
+    public String sendReminder(@RequestParam Long id, Model model) {
+        boolean ok = subscriptionService.sendReminderNow(id);
+        if (ok) {
+            model.addAttribute("success", "Đã gửi email nhắc khách hàng");
+        } else {
+            model.addAttribute("error", "Không tìm thấy gói dịch vụ để gửi nhắc");
+        }
+        List<ServiceSubscription> subs = subscriptionService.findAll();
+        model.addAttribute("subscriptions", subs);
+        return "admin/subscriptions";
+    }
+
+    @PostMapping("/subscriptions/delete")
+    public String deleteSubscription(@RequestParam Long id, Model model) {
+        try {
+            subscriptionService.deleteById(id);
+            model.addAttribute("success", "Đã xóa gói dịch vụ #" + id);
+        } catch (Exception e) {
+            model.addAttribute("error", "Xóa thất bại: " + e.getMessage());
+        }
+        List<ServiceSubscription> subs = subscriptionService.findAll();
+        model.addAttribute("subscriptions", subs);
+        return "admin/subscriptions";
+    }
+
+    @PostMapping("/subscriptions/edit")
+    public String editSubscription(@RequestParam Long id,
+                                   @RequestParam String customerEmail,
+                                   @RequestParam String serviceName,
+                                   @RequestParam String startDate,
+                                   @RequestParam String endDate,
+                                   Model model) {
+        try {
+            ServiceSubscription s = subscriptionService.findById(id);
+            if (s == null) throw new RuntimeException("Không tìm thấy gói");
+            s.setCustomerEmail(customerEmail);
+            s.setServiceName(serviceName);
+            s.setStartDate(LocalDate.parse(startDate));
+            s.setEndDate(LocalDate.parse(endDate));
+            subscriptionService.save(s);
+            model.addAttribute("success", "Đã cập nhật gói #" + id);
+        } catch (Exception e) {
+            model.addAttribute("error", "Cập nhật thất bại: " + e.getMessage());
+        }
+        List<ServiceSubscription> subs = subscriptionService.findAll();
+        model.addAttribute("subscriptions", subs);
+        return "admin/subscriptions";
+    }
+
     @PostMapping("/add-chatgpt-email")
     public String addChatGptEmail(@RequestParam String chatgptEmail,
                                  @RequestParam String secretKey,

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Nhập nhanh gói dịch vụ')}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="container">
+  <section class="page-header flex between wrap">
+    <div>
+      <h1 class="page-title">Nhập nhanh gói dịch vụ</h1>
+      <p class="muted small">Dán dữ liệu theo cột: email | Tên dịch vụ | Bắt đầu | Kết thúc. Chấp nhận ngày dạng d/M/yyyy hoặc dd/MM/yyyy.</p>
+    </div>
+    <div class="actions">
+      <a class="btn" th:href="@{/admin/subscriptions}">← Danh sách</a>
+    </div>
+  </section>
+
+  <div class="card">
+    <form th:action="@{/admin/subscriptions/import}" method="post" class="stack">
+      <label for="data"><strong>Dán dữ liệu tại đây</strong></label>
+      <textarea id="data" name="data" rows="16" placeholder="email\tTên dịch vụ\tBắt đầu\tKết thúc
+user@example.com\tCanva Pro\t19/4/2025\t19/04/2026"></textarea>
+      <div class="form-actions row gap end">
+        <button type="submit" class="btn btn-primary">Nhập dữ liệu</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="alert alert-info" style="margin-top:12px;">
+    Gợi ý: Có thể dùng tab, nhiều khoảng trắng, hoặc một khoảng trắng giữa các cột. Dòng trống sẽ được bỏ qua. Dòng không có email sẽ bỏ qua.
+  </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:replace="~{fragments/layout :: commonScripts}"></script>
+</body>
+</html> 
