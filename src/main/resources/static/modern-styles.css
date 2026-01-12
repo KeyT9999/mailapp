@@ -383,6 +383,17 @@ body {
   outline: none;
 }
 
+/* Light mode: ensure black text */
+@media (prefers-color-scheme: light) {
+  .input {
+    color: var(--neutral-900) !important;
+  }
+  
+  .input:focus {
+    color: var(--neutral-900) !important;
+  }
+}
+
 .input:focus {
   border-color: var(--primary-400);
   background: white;
@@ -1021,14 +1032,14 @@ body {
   
   .input {
     background: rgba(255, 255, 255, 0.12);
-    color: var(--neutral-800);
+    color: #ffffff !important;
     border-color: rgba(255, 255, 255, 0.2);
   }
 
   .input:focus {
     background: rgba(255, 255, 255, 0.15);
     border-color: var(--primary-400);
-    color: var(--neutral-900);
+    color: #ffffff !important;
   }
 
   .input::placeholder {
@@ -1133,8 +1144,18 @@ body {
 .input-group .label { font-size:12px; color:#667085; }
 input[type="text"], input[type="email"], input[type="date"], select {
   border:1px solid #dfe3ea; border-radius:10px; padding:9px 12px; outline:none;
+  color: #1f2937; /* Black text in light mode */
 }
 input:focus, select:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.12); }
+
+/* Dark mode for subscription page inputs */
+@media (prefers-color-scheme: dark) {
+  input[type="text"], input[type="email"], input[type="date"], select {
+    color: #ffffff !important; /* White text in dark mode */
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
 
 .table-responsive { overflow:auto; }
 .table { width:100%; border-collapse:separate; border-spacing:0; }
